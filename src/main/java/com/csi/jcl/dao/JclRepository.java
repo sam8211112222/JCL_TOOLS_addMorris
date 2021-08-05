@@ -1,0 +1,49 @@
+package com.csi.jcl.dao;
+
+import com.csi.jcl.entity.AdJclEntity;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * JclRepository 繼承PagingAndSortingRepository對資料庫進行數據持久化操作
+ *
+ * @author si1206 Sam Chen
+ * @version 1.8
+ * @date 2021/08/04
+ */
+@Repository
+public interface JclRepository extends PagingAndSortingRepository<AdJclEntity, String> {
+
+
+    /**
+     * 依adName查詢相關的JCL
+     *
+     * @param adName adName參數的值
+     * @author si1206
+     * @date 2021/08/04
+     */
+    public List<AdJclEntity> findByAd(String adName);
+
+    /**
+     * 依條件查詢JCL列表
+     *
+     * @param sprint sprint參數的值
+     * @param adName adName參數的值
+     * @author si1206
+     * @date 2021/08/04
+     */
+    @Query(nativeQuery = true, value = "SELECT DISTINCT A1.sprint,A1.AD ,A1.ADDESC,A1.SYSTEMTYPE,A1.SYSTEMDESC,A1.CHT ,CAD.CHT_AP,CAD.CHT_DC ,(Select count(JCL) from AD_JCL WHERE AD=A1.AD) AS JCLCOUT " +
+            "from AD_JCL  A1 " +
+            "inner join CHT_AP_DC CAD ON CAD.SPRINT=A1.SPRINT AND CAD.SYSTEMTYPE=A1.SYSTEMTYPE " +
+            "WHERE A1.AD NOT IN (Select AD FROM ad_jcl_exeorder WHERE BEFOREAD IS NOT NULL) " +
+            "and ( :adName is null OR A1.AD = :adName)" +
+            "and ( :sprint is null OR A1.SPRINT = :sprint )" +
+            "Order by A1.Sprint,A1.SYSTEMTYPE,A1.AD")
+    public List<Map<String, Object>> listAllJclByCondition(@Param("adName") String adName, @Param("sprint") String sprint);
+
+}

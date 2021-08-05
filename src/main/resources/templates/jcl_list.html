@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>JCL</title>
+</head>
+<body>
+<table border="1" cellpadding="1" cellspacing="1" style="width:850px">
+    <tr>
+        <th scope="col" style="background-color:#6699cc;"><a href="#" style="color: azure">查詢可執行之AD</a></th>
+        <th scope="col" style="background-color:#6699cc;"><a href="#" style="color: azure">測試個案查詢</a></th>
+        <th scope="col" style="background-color:#6699cc;"><a href="#" style="color: azure">執行順序查詢</a></th>
+    </tr>
+</table>
+
+<p><span style="font-size:16px"><strong>查詢條件</strong></span></p>
+
+<form th:action="@{/jcl/search}">Sprint：
+    <input checked="checked" name="sprint" type="radio" value="All"/>All
+    <input name="sprint" type="radio" value="sprint1"/>Sprint1
+    <input name="sprint" type="radio" value="sprint2"/>Sprint2
+    <input name="sprint" type="radio" value="sprint3"/>Sprint3
+    <br/>
+    AD：<input size="16" type="search" name="adName" placeholder="以AD名稱搜尋"/><br/>
+    <input type="submit" value="查詢"/><br/>
+    <!--    從第一頁開始查詢-->
+    <input hidden name="page" value="0">
+</form>
+
+<!--取得網址與參數-->
+<!--    <h1 th:text="${#httpServletRequest.getRequestURL()}"></h1>-->
+<!--    <h1 th:text="${#httpServletRequest.getQueryString()}"></h1>-->
+<!--<a th:text="${#httpServletRequest.getRequestURL()}+${#httpServletRequest.getQueryString()}">-->
+
+<form enctype="multipart/form-data" name="result">
+    <table border="1" cellpadding="1" cellspacing="1" style="width:850px">
+        <caption>
+            <strong>
+                <span style="font-size:16px">查詢結果
+                </span>
+                <span  th:text="${allJclList.totalElements} + '筆資料'">
+                </span>
+                <br>
+                <span th:if="${allJclList.totalElements} == 0" th:text="查無符合條件資料" style="color: red">
+                </span>
+                <br>
+                頁數: <span th:each="pages : ${pageList}">
+                     <a th:href="@{search(sprint=${sprint},adName=${adName},page=${pages})}" th:text="${pages+1}"></a>
+                 </span>
+            </strong>
+        </caption>
+        <thead>
+        <tr>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">SPRINT</th>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">AD</th>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">AD Description</th>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">CHT AP</th>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">CHT DC</th>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">子系統</th>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">JCL數量</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="allJclLists : ${allJclList}">
+            <td th:text="${allJclLists.sprint}"></td>
+            <td th:text="${allJclLists.ad}"></td>
+            <td th:text="${allJclLists.addesc}"></td>
+            <td th:text="${allJclLists.cht_ap}"></td>
+            <td th:text="${allJclLists.cht_dc}"></td>
+            <td th:switch="${allJclLists.systemdesc == null}">
+                <span th:case="true" th:text="${allJclLists.systemtype}"></span>
+                <span th:case="false" th:text="${allJclLists.systemtype}+${allJclLists.systemdesc}"></span>
+            </td>
+            <td>
+                <a th:href="@{searchJclDetail/{ad}(ad = ${allJclLists.ad})}" target="_blank">
+                    <span th:text="${allJclLists.jclcout}"></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+</body>
+</html>
