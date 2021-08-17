@@ -2,7 +2,9 @@ package com.csi.jcl.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.csi.jcl.dao.JclRepository;
+import com.csi.jcl.dao.UserInfoRepository;
 import com.csi.jcl.entity.AdJclEntity;
+import com.csi.jcl.entity.UserInfoEntity;
 import com.csi.jcl.model.AdJclModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,10 +34,11 @@ public class JclServiceImpl implements JclService {
      * @date 2021/08/04
      */
     private final JclRepository jclRepository;
-
+    private final UserInfoRepository userInfoRepository;
     @Autowired
-    public JclServiceImpl(JclRepository jclRepository) {
+    public JclServiceImpl(JclRepository jclRepository, UserInfoRepository userInfoRepository) {
         this.jclRepository = jclRepository;
+        this.userInfoRepository = userInfoRepository;
     }
 
     /**
@@ -87,6 +90,14 @@ public class JclServiceImpl implements JclService {
             logger.info(listJclModel);
             return listJclModel;
         }
+    }
+
+    @Override
+    public List<UserInfoEntity> findAll() {
+
+        List<UserInfoEntity> list = userInfoRepository.findAll();
+
+        return list;
     }
 
 }

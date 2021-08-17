@@ -1,6 +1,7 @@
 package com.csi.jcl.service;
 
 import com.csi.jcl.entity.AdJclEntity;
+import com.csi.jcl.entity.UserInfoEntity;
 import com.csi.jcl.model.AdJclModel;
 
 import java.util.List;
@@ -17,5 +18,7 @@ public interface JclService {
     public List<AdJclEntity> findJclByAd(String adName);
 
     public List<AdJclModel> listAllJclByCondition(String adName, String sprint);
+
+    public List<UserInfoEntity> findAll();
 
 }

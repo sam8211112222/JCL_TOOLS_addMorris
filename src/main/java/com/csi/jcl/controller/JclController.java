@@ -1,14 +1,19 @@
 package com.csi.jcl.controller;
 
 import com.csi.jcl.entity.AdJclEntity;
+import com.csi.jcl.entity.UserInfoEntity;
 import com.csi.jcl.model.AdJclModel;
 import com.csi.jcl.service.JclService;
+import com.csi.jcl.service.UserInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 /**
  * 定義JclController類別
@@ -27,35 +32,64 @@ import java.util.List;
  * @date 2021/08/04
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/jcl")
 public class JclController {
 
     private static final Logger logger =
             LogManager.getLogger(JclController.class);
 
     /**
-     * 注入JclService
+     * 注入JclService,UserInfoService
      *
      * @author si1206 Sam Chen
      * @date 2021/08/04
      */
     private final JclService jclService;
+    private final UserInfoService userInfoService;
 
     @Autowired
-    public JclController(JclService jclService) {
+    public JclController(JclService jclService, UserInfoService userInfoService) {
         this.jclService = jclService;
+        this.userInfoService = userInfoService;
     }
 
     /**
-     * 首頁
+     * JCL首頁
+     * 從session取得userid來更新最後登入時間
      *
      * @author si1206 Sam Chen
+     * @param httpSession HttpSession
      * @date 2021/08/04
      * @return jcl_home.html
      */
-    @GetMapping("/jcl")
-    public String hello() {
-        return "jcl_home";
+    @GetMapping("/home")
+    public String hello(HttpSession httpSession) {
+
+        // 取得Session內的key, value
+        Enumeration<String> names = httpSession.getAttributeNames();
+        while (names.hasMoreElements()){
+            String name = names.nextElement();
+            Object value = httpSession.getAttribute(name);
+            logger.info("name = " + name);
+            logger.info("value = " + value);
+        }
+        // 取得SPRING_SECURITY_CONTEXT
+        Object spring_security_context = httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
+        SecurityContext securityContext = (SecurityContext) spring_security_context;
+        // 取得認證訊息
+        Authentication authentication = securityContext.getAuthentication();
+        // 取得登入資訊
+        Object principal = authentication.getPrincipal();
+
+        //取得userid
+        User user = (User) principal;
+        String userid = user.getUsername();
+
+        // 依userid尋找對應的userInfoEntity
+        UserInfoEntity userInfoEntity =  userInfoService.findById(userid);
+        // 更新userInfoEntity的狀態
+        userInfoService.updateInfo(userInfoEntity);
+        return "jcl/jcl_home";
     }
 
     /**
@@ -70,7 +104,7 @@ public class JclController {
      * @param page 頁面總數
      * @return jcl_list.html
      */
-    @GetMapping("jcl/search")
+    @GetMapping("/search")
     public String searchAdJcl(Model model,
                               @RequestParam("sprint") String sprint,
                               @RequestParam("adName") String adName,
@@ -105,7 +139,7 @@ public class JclController {
         model.addAttribute("pageList", pageList);
         logger.info("model " + model);
         // 導回jcl頁面
-        return "jcl_list";
+        return "jcl/jcl_list";
     }
 
     /**
@@ -117,7 +151,7 @@ public class JclController {
      * @param adName adName參數的值
      * @return jcl_detail.html
      */
-    @GetMapping("jcl/searchJclDetail/{ad}")
+    @GetMapping("/searchJclDetail/{ad}")
     public String showJclDetail(Model model, @PathVariable("ad") String adName) {
         logger.info("jcl/searchJclDetail/" + adName);
         // 從jclService的listAllJclByCondition取得資料
@@ -132,6 +166,6 @@ public class JclController {
         logger.info("model " + model);
 
         // 導回jcl_detail頁面
-        return "jcl_detail";
+        return "jcl/jcl_detail";
     }
 }
