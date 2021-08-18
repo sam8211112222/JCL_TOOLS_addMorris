@@ -45,9 +45,10 @@
                 <br>
                 <span th:if="${allJclList.totalElements} == 0" th:text="查無符合條件資料" style="color: red">
                 </span>
+                <span th:if="${allJclList.totalElements} != 0" th:text="目前在+${page+1}+頁"></span>
                 <br>
                 頁數: <span th:each="pages : ${pageList}">
-                     <a th:href="@{search(sprint=${sprint},adName=${adName},page=${pages})}" th:text="${pages+1}"></a>
+                     <a th:href="@{search(sprint=${sprint},adName=${adName},page=${pages})}" th:text="${pages+1}" th:id="page+${pages+1}" ></a>
                  </span>
             </strong>
         </caption>
@@ -82,6 +83,16 @@
         </tbody>
     </table>
 </form>
+<script th:inline="javascript">
+    window.onload= function clickPage(){
+        const page = window.location.search;
+        let currentPage = page.charAt(page.length -1);
+        let pageNum = Number(currentPage) + 1;
+        let pageId = "page" + pageNum
+        let selectPageId = document.getElementById(pageId);
+        selectPageId.style.display="none"
+    }
 
+</script>
 </body>
 </html>

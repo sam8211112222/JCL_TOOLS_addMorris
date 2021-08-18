@@ -33,4 +33,12 @@ public class CheckCodeEntity implements Serializable {
     public String getCode() {
         return this.code;
     }
+
+    @Override
+    public String toString() {
+        return "CheckCodeEntity{" +
+                "code='" + code + '\'' +
+                ", expireTime=" + expireTime +
+                '}';
+    }
 }

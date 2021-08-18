@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta name="viewport" content="width=device-width"/>
+    <meta name="viewport" content="width=device-width" />
     <title>CCBS 2.0 測試個案管理系統</title>
     <style type="text/css">
         #loginButton {
@@ -11,7 +11,7 @@
             border: 1px solid gray;
             font-size: 16px;
             width: 100px;
-            cursor: pointer
+            cursor: pointer;
         }
 
         #resetValidateNumber {
@@ -21,7 +21,7 @@
             border: 1px solid gray;
             font-size: 12px;
             width: 50px;
-            cursor: pointer
+            cursor: pointer;
         }
 
         #errMsg {
@@ -64,62 +64,96 @@
             cursor: pointer;
         }
 
-        input[type="text"], input[type="password"] {
+        input[type="text"],
+        input[type="password"] {
             border: 1px solid blue;
-
         }
 
         #msg {
             color: blue;
             font-size: 10pt;
         }
-
     </style>
     <!--    <script th:src="@{jquery-3.6.0.min.js}"></script>-->
 </head>
 <body>
-
 <!--<h1 th:each="cookie :${#httpServletRequest.getCookies()}" th:text="${cookie.getName()}"></h1>-->
 <div id="content">
     <div id="contentTitle"><strong>CCBS 2.0 測試個案管理系統</strong></div>
 
     <div id="contentBody">
-        <form th:action="@{/login/form}" id="loginForm"
-              method="POST" class="form-horizontal"></form>
+        <form
+                th:action="@{/login/form}"
+                id="loginForm"
+                method="POST"
+                class="form-horizontal"
+        ></form>
         <table id="dataTable">
             <!-- Username -->
             <tr>
-                <td><label style="color:blue;"> 帳號：</label></td>
-                <td><input type="text" name="username" form="loginForm" placeholder="請輸入帳號"/></td>
+                <td><label style="color: blue"> 帳號：</label></td>
+                <td>
+                    <input
+                            id="username"
+                            type="text"
+                            name="username"
+                            form="loginForm"
+                            placeholder="請輸入帳號"
+                    />
+                </td>
             </tr>
 
             <!-- Password -->
             <tr>
-                <td><label style="color:blue;">密碼：</label></td>
-                <td><input type="password" name="password" form="loginForm" placeholder="請輸入密碼"/></td>
+                <td><label style="color: blue">密碼：</label></td>
+                <td>
+                    <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            form="loginForm"
+                            placeholder="請輸入密碼"
+                    />
+                </td>
             </tr>
             <tr>
                 <td>
                     <div th:if="${param.error}">
-                        <div style="color: red">
-                            登入帳號／密碼有誤，請重新輸入
-                        </div>
+                        <div style="color: red">登入帳號／密碼有誤，請重新輸入</div>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td><input name="imageCode" id="imageCode" type="text" placeholder="驗證碼" form="loginForm"></td>
                 <td>
-                    <div><img th:src="@{/code/image}" alt="驗證碼" id="my_image"/>
+                    <input
+                            name="imageCode"
+                            id="imageCode"
+                            type="text"
+                            placeholder="驗證碼"
+                            form="loginForm"
+                    />
+                </td>
+                <td>
+                    <div>
+                        <img th:src="@{/code/image}" alt="驗證碼" id="my_image" />
                     </div>
                 </td>
                 <td>
-                    <button onclick="changePic()">重產</button>
+                    <button id="resetValidateNumber" onclick="changePic()">
+                        重產
+                    </button>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <button id="loginButton" type="button" form="loginForm" onclick="verifyKaptcha()">登入</button>
+                    <button
+                            id="loginButton"
+                            type="button"
+                            form="loginForm"
+                            onclick="verifyKaptcha()"
+                    >
+                        登入
+                    </button>
                 </td>
             </tr>
             <tr>
@@ -131,22 +165,48 @@
     </div>
     <script th:inline="javascript">
         function changePic() {
-            document.getElementById("my_image").src = '/code/image?' + Math.random();
+            document.getElementById("my_image").src =
+                "/code/image?" + Math.random();
         }
 
         function verifyKaptcha() {
+            // 取得帳號欄位輸入的字串
+            const usernameElement = document.getElementById("username");
+            const usernameText = usernameElement.value;
+
+            // 取得密碼欄位輸入的字串
+            const passwordElement = document.getElementById("password");
+            const passwordText = passwordElement.value;
+
+            // 取得驗證碼欄位輸入的字串
             const imageCodeElement = document.getElementById("imageCode");
             const imageCodeText = imageCodeElement.value;
-            console.log(imageCodeText);
-            if (imageCodeText === document.cookie.split('=')[1]) {
+
+            // 判斷輸入欄位不得為空
+            switch (usernameText) {
+                case "":
+                    alert("帳號不得為空");
+                    break;
+            }
+            switch (passwordText) {
+                case "":
+                    alert("密碼不得為空");
+                    break;
+            }
+            switch (imageCodeText) {
+                case "":
+                    alert("驗證碼不得為空");
+                    break;
+            }
+            // 送出表單
+            if (
+                usernameText.trim() !== "" &&
+                passwordText.trim() !== "" &&
+                imageCodeText.trim() !== ""
+            ) {
                 document.getElementById("loginForm").submit();
-            } else if (imageCodeText.trim()===""){
-                alert("請輸入驗證碼!")
-            }else {
-                alert("驗證碼輸入錯誤!")
             }
         }
-
     </script>
 </div>
 </body>
