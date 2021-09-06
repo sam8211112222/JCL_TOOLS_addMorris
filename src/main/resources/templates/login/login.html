@@ -172,15 +172,15 @@
         function verifyKaptcha() {
             // 取得帳號欄位輸入的字串
             const usernameElement = document.getElementById("username");
-            const usernameText = usernameElement.value;
+            const usernameText = usernameElement.value.trim();
 
             // 取得密碼欄位輸入的字串
             const passwordElement = document.getElementById("password");
-            const passwordText = passwordElement.value;
+            const passwordText = passwordElement.value.trim();
 
             // 取得驗證碼欄位輸入的字串
             const imageCodeElement = document.getElementById("imageCode");
-            const imageCodeText = imageCodeElement.value;
+            const imageCodeText = imageCodeElement.value.trim();
 
             // 判斷輸入欄位不得為空
             switch (usernameText) {
