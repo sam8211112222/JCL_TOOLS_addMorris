@@ -9,34 +9,16 @@
 </div>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width:500px">
-    <tbody>
+    <thead>
     <tr>
         <td style="background-color: rgb(204, 255, 153);">JCL</td>
         <td style="background-color: rgb(204, 255, 153);">JCL Description</td>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="listJclByAds : ${listJclByAd}">
         <td th:text="${listJclByAds.jcl}"></td>
         <td th:text="${listJclByAds.jcldesc}"></td>
-    </tr>
-    <tr>
-        <td>JBPBKDC2</td>
-        <td>串代表號子號改帳資料</td>
-    </tr>
-    <tr>
-        <td>JBPBKDC3</td>
-        <td>分送繳費管道J給四科</td>
-    </tr>
-    <tr>
-        <td>JBPBNK01</td>
-        <td>代繳資料分檔__*CHG JCL</td>
-    </tr>
-    <tr>
-        <td>JBPMBILD</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>JBPMBILD</td>
-        <td>JBPPBX5</td>
     </tr>
     </tbody>
 </table>

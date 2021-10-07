@@ -1,62 +1,37 @@
-package com.csi.jcl.entity;
-import javax.persistence.*;
+package com.csi.jcl.model;
 
-/**
- * 對應資料庫AD_JCL_EXEORDER table
- *
- * @author si1206 Sam Chen
- * @version 1.8
- * @date 2021/08/04
- */
-@Entity
-@Table(name = "AD_JCL_EXEORDER", schema = "REHOST", catalog = "")
-//@IdClass(AdJclExeorderKey.class)
-public class AdJclExeorderEntity {
+import javax.persistence.Column;
 
-    @Id
-    @Column(name = "AD")
+public class AdJclExeorderModel {
+
     private String ad;
 
-    @Column(name = "ADDESC")
     private String addesc;
 
-//    @Id
-    @Column(name = "JCL")
     private String jcl;
 
-    @Column(name = "JCLESC")
     private String jclesc;
 
-    @Column(name = "BEFOREAD")
     private String beforead;
 
-    @Column(name = "BEFOREJCL")
     private String beforejcl;
 
-    @Column(name = "AFTERJCL")
     private String afterjcl;
 
-    @Column(name = "BEFORE_JCL_AD")
     private String beforeJclAd;
 
-    @Column(name = "BEFORE_WORK_STATION")
     private String beforeWorkStation;
 
-    @Column(name = "SELF_WORK_STATION")
     private String selfWorkStation;
 
-    @Column(name = "AFTER_WORK_STATION")
     private String afterWorkStation;
 
-//    @Id
-    @Column(name = "JID")
     private String jid;
 
-
-    public AdJclExeorderEntity() {
+    public AdJclExeorderModel() {
     }
 
-    public AdJclExeorderEntity(String ad, String addesc, String jcl, String jclesc, String beforead, String beforejcl, String afterjcl, String beforeJclAd, String beforeWorkStation, String selfWorkStation, String afterWorkStation, String jid) {
+    public AdJclExeorderModel(String ad, String addesc, String jcl, String jclesc, String beforead, String beforejcl, String afterjcl, String beforeJclAd, String beforeWorkStation, String selfWorkStation, String afterWorkStation, String jid) {
         this.ad = ad;
         this.addesc = addesc;
         this.jcl = jcl;
@@ -169,7 +144,7 @@ public class AdJclExeorderEntity {
 
     @Override
     public String toString() {
-        return "AdJclExeorderEntity{" +
+        return "AdJclExeorderModel{" +
                 "ad='" + ad + '\'' +
                 ", addesc='" + addesc + '\'' +
                 ", jcl='" + jcl + '\'' +

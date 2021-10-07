@@ -1,7 +1,7 @@
 package com.csi.jcl.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.csi.jcl.dao.JclRepository;
+import com.csi.jcl.dao.AdJclRepository;
 import com.csi.jcl.dao.UserInfoRepository;
 import com.csi.jcl.entity.AdJclEntity;
 import com.csi.jcl.entity.UserInfoEntity;
@@ -33,11 +33,11 @@ public class JclServiceImpl implements JclService {
      * @author si1206 Sam Chen
      * @date 2021/08/04
      */
-    private final JclRepository jclRepository;
+    private final AdJclRepository adJclRepository;
     private final UserInfoRepository userInfoRepository;
     @Autowired
-    public JclServiceImpl(JclRepository jclRepository, UserInfoRepository userInfoRepository) {
-        this.jclRepository = jclRepository;
+    public JclServiceImpl(AdJclRepository adJclRepository, UserInfoRepository userInfoRepository) {
+        this.adJclRepository = adJclRepository;
         this.userInfoRepository = userInfoRepository;
     }
 
@@ -52,7 +52,7 @@ public class JclServiceImpl implements JclService {
     @Override
     public List<AdJclEntity> findJclByAd(String adName) {
         logger.info("Call findJclByAd()");
-        return jclRepository.findByAd(adName);
+        return adJclRepository.findByAd(adName);
     }
 
     /**
@@ -73,7 +73,7 @@ public class JclServiceImpl implements JclService {
             sprint = "";
             logger.info("adName = " + adName + " sprint = " + sprint);
 
-            List<Map<String, Object>> listJcl = jclRepository.listAllJclByCondition(adName, sprint);
+            List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(adName, sprint);
             logger.info("Get listJcl from DB");
 
             List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
@@ -83,7 +83,7 @@ public class JclServiceImpl implements JclService {
 
             logger.info("adName = " + adName + " sprint = " + sprint);
 
-            List<Map<String, Object>> listJcl = jclRepository.listAllJclByCondition(adName, sprint);
+            List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(adName, sprint);
             logger.info("Get listJcl from DB");
 
             List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);

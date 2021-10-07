@@ -29,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @date 2021/08/17
      */
     private final DataSource dataSource;
+
     public WebSecurityConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -72,5 +73,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+
+        //這邊是測試方便使用
+//        http.authorizeRequests()
+//                .anyRequest()
+//                .permitAll();
     }
 }

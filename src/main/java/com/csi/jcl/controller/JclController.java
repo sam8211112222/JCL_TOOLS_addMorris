@@ -66,13 +66,13 @@ public class JclController {
     public String hello(HttpSession httpSession) {
 
         // 取得Session內的key, value
-        Enumeration<String> names = httpSession.getAttributeNames();
-        while (names.hasMoreElements()){
-            String name = names.nextElement();
-            Object value = httpSession.getAttribute(name);
-            logger.info("name = " + name);
-            logger.info("value = " + value);
-        }
+//        Enumeration<String> names = httpSession.getAttributeNames();
+//        while (names.hasMoreElements()){
+//            String name = names.nextElement();
+//            Object value = httpSession.getAttribute(name);
+//            logger.info("name = " + name);
+//            logger.info("value = " + value);
+//        }
         // 取得SPRING_SECURITY_CONTEXT
         Object spring_security_context = httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
         SecurityContext securityContext = (SecurityContext) spring_security_context;
@@ -85,10 +85,13 @@ public class JclController {
         User user = (User) principal;
         String userid = user.getUsername();
 
-        // 依userid尋找對應的userInfoEntity
-        UserInfoEntity userInfoEntity =  userInfoService.findById(userid);
-        // 更新userInfoEntity的狀態
-        userInfoService.updateInfo(userInfoEntity);
+        if (httpSession.getAttribute("login") == null){
+            // 依userid尋找對應的userInfoEntity
+            UserInfoEntity userInfoEntity =  userInfoService.findById(userid);
+            // 更新userInfoEntity的狀態
+            userInfoService.updateInfo(userInfoEntity);
+            httpSession.setAttribute("login","login");
+        }
         return "jcl/jcl_home";
     }
 

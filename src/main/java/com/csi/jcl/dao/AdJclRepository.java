@@ -17,7 +17,7 @@ import java.util.Map;
  * @date 2021/08/04
  */
 @Repository
-public interface JclRepository extends PagingAndSortingRepository<AdJclEntity, String> {
+public interface AdJclRepository extends PagingAndSortingRepository<AdJclEntity, String> {
 
 
     /**
