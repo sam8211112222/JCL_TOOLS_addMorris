@@ -24,17 +24,17 @@
 <body>
 <table border="1" cellpadding="1" cellspacing="1" style="width:850px">
     <tr>
-        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl/home}" style="color: azure">查詢可執行之AD</a>
+        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl/jcl_home}" style="color: azure">查詢可執行之AD</a>
         </th>
         <th scope="col" style="background-color:#6699cc;"><a href="#" style="color: azure">測試個案查詢</a></th>
-        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jclsequence/home}"
+        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl_sequence/jcl_sequence_home}"
                                                              style="color: azure">執行順序查詢</a></th>
     </tr>
 </table>
 
 <p><span style="font-size:16px"><strong>查詢條件</strong></span></p>
 
-<form th:action="@{/jclsequence/findsequence}">
+<form th:action="@{/jcl_sequence/jcl_sequence_list}">
     AD：<input size="16" type="search" name="adName" placeholder="以AD名稱搜尋"/><br/>
     <input type="submit" value="查詢"/><br/>
 </form>
@@ -120,8 +120,8 @@
 <script>
 
     // 取得要fetch data的網址
-    const getJclSequenceDataUrl = "http://localhost:8081/jclsequence/getJclSequenceData?"
-    const getAllSelfJclDataUrl = "http://localhost:8081/jclsequence/getAllSelfJcl?"
+    const getJclSequenceDataUrl = "http://localhost:8081/jcl_sequence/getJclSequenceData?"
+    const getAllSelfJclDataUrl = "http://localhost:8081/jcl_sequence/getAllSelfJcl?"
     const split = location.href.split("?")
     const param = split[1];
 
@@ -152,27 +152,6 @@
         // 這邊是測試
         let selfJclDataArray = Array.from(allSelfJclData)
         console.log(selfJclDataArray)
-
-        // // 取得allSelfJclData物件的長度
-        // let allSelfJclDataObject = Object.keys(allSelfJclData);
-        // let allSelfJclDataObjectLength = allSelfJclDataObject.length;
-        //
-        // // 比對jclSequenceData內的資料並重組迴圈
-        // for (i = 0; i < jclSequenceDataObjectLength; i++ ){
-        //     // 依照每一個物件取物件內的值
-        //     let innerData = jclSequenceData[i];
-        //     let dataArray = Array.from(innerData);
-        //     console.log(dataArray)
-        //     // console.log(innerData);
-        //     for (j = 0; j < innerData.length; j++){
-        //         let arrayContent = dataArray.replace(/\[|]/g, '');
-        //         for (k = 0; k<allSelfJclDataObjectLength; k++){
-        //             if (arrayContent === allSelfJclData[k]){
-        //                 console.log("YES")
-        //             }
-        //         }
-        //     }
-        // }
 
         // 依物件長度執行迴圈
         for (i = 0; i < jclSequenceDataObjectLength; i++) {
@@ -290,7 +269,7 @@
         let beforeJcl = roots[rootsLength - 1].innerText
         let urlParam = location.href.split("=")
         let beforeAd = urlParam[1]
-        const nextJclUrl = `http://localhost:8081/jclsequence/findNextAd?beforeAd=${beforeAd}&&beforeJcl=${beforeJcl}`
+        const nextJclUrl = `http://localhost:8081/jcl_sequence/findNextAd?beforeAd=${beforeAd}&&beforeJcl=${beforeJcl}`
         const nextJclResponse = await fetch(nextJclUrl);
         const nextJclResponseData = await nextJclResponse.json();
         let nextJclDataArray = Array.from(nextJclResponseData)
@@ -316,7 +295,7 @@
     async function showBreakPoint() {
         let urlParam = location.href.split("=")
         let beforeAd = urlParam[1]
-        let breakPointUrl = `http://localhost:8081/jclsequence/findBreakPoint?adName=${beforeAd}`
+        let breakPointUrl = `http://localhost:8081/jcl_sequence/findBreakPoint?adName=${beforeAd}`
         const breakPointUrlResponse = await fetch(breakPointUrl);
         const breakPointUrlResponseData = await breakPointUrlResponse.json();
         let breakPointArray = Array.from(breakPointUrlResponseData);
@@ -325,11 +304,12 @@
             for (j = 0; j < breakPointArray.length; j++) {
                 if (spans[i].innerHTML === breakPointArray[j]) {
                     let spanHTML = spans[i].innerHTML
-                    let breakPointDetail = `http://localhost:8081/jclsequence/findBreakPointDetail/${spanHTML}`
+                    let breakPointDetail = `http://localhost:8081/jcl_sequence/findBreakPointDetail/${spanHTML}`
                     let a = document.createElement("a")
                     a.href=breakPointDetail
                     a.innerText="暫停：DB比對斷點"
                     a.style.color="white"
+                    a.target="_blank"
                     let br = document.createElement("br")
                     spans[i].appendChild(br);
                     spans[i].appendChild(a);
@@ -341,7 +321,7 @@
     async function showCheckPoint() {
         let urlParam = location.href.split("=")
         let beforeAd = urlParam[1]
-        let checkPointUrl = `http://localhost:8081/jclsequence/findCheckPoint?adName=${beforeAd}`
+        let checkPointUrl = `http://localhost:8081/jcl_sequence/findCheckPoint?adName=${beforeAd}`
         const checkPointUrlResponse = await fetch(checkPointUrl);
         const checkPointUrlResponseData = await checkPointUrlResponse.json();
         let checkPointArray = Array.from(checkPointUrlResponseData);
@@ -352,11 +332,12 @@
                     let innerText = spans[i].innerText
                     let innerArray = innerText.split("\n")
                     let jcl = innerArray[0]
-                    let checkPointDetail = `http://localhost:8081/jclsequence/findCheckPointDetail/${jcl}`
+                    let checkPointDetail = `http://localhost:8081/jcl_sequence/findCheckPointDetail/${jcl}`
                     let a = document.createElement("a")
                     a.href=checkPointDetail
                     a.innerText="暫停：檔案查核點"
                     a.style.color="white"
+                    a.target="_blank"
                     let br = document.createElement("br")
                     spans[i].appendChild(br);
                     spans[i].appendChild(a);

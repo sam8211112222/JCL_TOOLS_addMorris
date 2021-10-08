@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @date 2021/09/13
  */
 @Controller
-@RequestMapping("/jclsequence")
+@RequestMapping("/jcl_sequence")
 public class AdJclExeorderController {
 
     private static final Logger logger =
@@ -43,10 +43,10 @@ public class AdJclExeorderController {
      * @author si1206 Sam Chen
      * @date 2021/09/13
      */
-    @GetMapping("/home")
+    @GetMapping("/jcl_sequence_home")
     public String sequenceHomePage() {
         logger.info("It's sequenceHomePage");
-        return "/jcl_sequence/jcl_sequence_home";
+        return "jcl_sequence/jcl_sequence_home";
     }
 
 
@@ -58,7 +58,7 @@ public class AdJclExeorderController {
      * @author si1206 Sam Chen
      * @date 2021/09/16
      */
-    @GetMapping("/findsequence")
+    @GetMapping("/jcl_sequence_list")
     public String findJclSequence(@RequestParam("adName") String adName, Model model) {
         logger.info("It's findJclSequencePage");
         List<AdJclEntity> listJclByAd = jclService.findJclByAd(adName);
@@ -69,7 +69,7 @@ public class AdJclExeorderController {
             String addesc = listJclByAd.get(0).getAddesc();
             model.addAttribute("addesc", addesc);
         }
-        return "/jcl_sequence/jcl_sequence_list";
+        return "jcl_sequence/jcl_sequence_list";
     }
 
     /**
@@ -160,7 +160,7 @@ public class AdJclExeorderController {
         logger.info("資料庫比對斷點分頁");
         List<CheckPointModel> findBreakPointDetail = adJclExeorderService.findBreakPointDetail(jcl);
         model.addAttribute("findBreakPointDetail", findBreakPointDetail);
-        return "/jcl_sequence/breakpoint_detail";
+        return "jcl_sequence/breakpoint_detail";
     }
 
     /**
@@ -200,6 +200,6 @@ public class AdJclExeorderController {
                 .collect(Collectors.toSet());
         model.addAttribute("findCheckPointOutputDetailSet", findCheckPointOutputDetailSet);
 
-        return "/jcl_sequence/checkpoint_detail";
+        return "jcl_sequence/checkpoint_detail";
     }
 }

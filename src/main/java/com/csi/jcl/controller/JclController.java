@@ -62,7 +62,7 @@ public class JclController {
      * @date 2021/08/04
      * @return jcl_home.html
      */
-    @GetMapping("/home")
+    @GetMapping("/jcl_home")
     public String hello(HttpSession httpSession) {
 
         // 取得Session內的key, value

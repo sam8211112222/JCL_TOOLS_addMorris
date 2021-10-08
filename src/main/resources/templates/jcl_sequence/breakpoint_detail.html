@@ -19,7 +19,10 @@
   <tbody>
   <tr th:each="fbpd : ${findBreakPointDetail}">
     <td th:text="${fbpd.sprintno}"></td>
-    <td th:text="${fbpd.ad+fbpd.addesc}"></td>
+    <td th:switch="${fbpd.addesc != null}">
+      <span th:case="true" th:text="${fbpd.ad}+${fbpd.addesc}"></span>
+      <span th:case="false" th:text="${fbpd.ad}"></span>
+    </td>
     <td th:text="${fbpd.jcl}"></td>
     <td th:text="${fbpd.dd}"></td>
     <td th:text="${fbpd.owner}"></td>
