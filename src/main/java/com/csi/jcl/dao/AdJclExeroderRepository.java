@@ -22,10 +22,17 @@ public class AdJclExeroderRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    //  原生sql查詢
-    public List<Map<String, Object>> query(String sql, Map<String, ?> paramMap) {
-        List<Map<String, Object>> result = namedParameterJdbcTemplate.queryForList(sql, paramMap);
-        return result;
+    /**
+     * 依原生sql操作資料庫
+     *
+     * @param sql 原生sql
+     * @param param param參數的值
+     * @return namedParameterJdbcTemplate.queryForList(sql, param)
+     * @author si1206 Sam Chen
+     * @date 2021/10/13
+     */
+    public List<Map<String, Object>> query(String sql, Map<String, ?> param) {
+        return namedParameterJdbcTemplate.queryForList(sql, param);
     }
 
 }
