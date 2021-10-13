@@ -151,7 +151,7 @@
 
         // 這邊是測試
         let selfJclDataArray = Array.from(allSelfJclData)
-        console.log(selfJclDataArray)
+        // console.log(selfJclDataArray)
 
         // 依物件長度執行迴圈
         for (i = 0; i < jclSequenceDataObjectLength; i++) {
@@ -288,6 +288,8 @@
         h1Div.appendChild(h1)
         box.appendChild(h1Div)
         box.appendChild(lastDiv)
+
+        // 呼叫showBreakPoint()與showCheckPoint()在欄位顯示超連結
         showBreakPoint()
         showCheckPoint()
     }

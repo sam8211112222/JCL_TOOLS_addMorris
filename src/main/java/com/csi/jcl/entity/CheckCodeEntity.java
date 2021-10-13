@@ -3,6 +3,13 @@ package com.csi.jcl.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 對應驗證碼
+ *
+ * @author si1206 Sam Chen
+ * @version 1.8
+ * @date 2021/08/17
+ */
 public class CheckCodeEntity implements Serializable {
 
     // 驗證碼字元

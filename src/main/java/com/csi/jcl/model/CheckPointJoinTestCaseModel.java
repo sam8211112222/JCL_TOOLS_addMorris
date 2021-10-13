@@ -1,5 +1,13 @@
 package com.csi.jcl.model;
 
+/**
+ * 用NativeSql複合查詢時所需要的類別
+ * 變數名稱需要對應sql上的變數名稱
+ *
+ * @author si1206 Sam Chen
+ * @version 1.8
+ * @date 2021/10/13
+ */
 public class CheckPointJoinTestCaseModel {
 
     private String sprintno;
