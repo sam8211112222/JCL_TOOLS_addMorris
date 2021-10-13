@@ -35,6 +35,7 @@ public class JclServiceImpl implements JclService {
      */
     private final AdJclRepository adJclRepository;
     private final UserInfoRepository userInfoRepository;
+
     @Autowired
     public JclServiceImpl(AdJclRepository adJclRepository, UserInfoRepository userInfoRepository) {
         this.adJclRepository = adJclRepository;

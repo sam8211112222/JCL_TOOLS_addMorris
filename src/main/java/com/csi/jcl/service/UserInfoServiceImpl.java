@@ -18,7 +18,7 @@ import java.util.Optional;
  * @date 2021/08/04
  */
 @Service
-public class UserInfoServiceImpl implements UserInfoService{
+public class UserInfoServiceImpl implements UserInfoService {
 
     private static final Logger logger =
             LogManager.getLogger(UserInfoServiceImpl.class);
@@ -37,6 +37,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     /**
      * 依userid尋找對應的UserInfoEntity
+     *
      * @param userId userid
      * @return userInfoEntity
      * @author si1206 Sam Chen
@@ -46,10 +47,10 @@ public class UserInfoServiceImpl implements UserInfoService{
     public UserInfoEntity findById(String userId) {
         Optional<UserInfoEntity> result = userInfoRepository.findById(userId);
         UserInfoEntity userInfoEntity = null;
-        if(result.isPresent()){
+        if (result.isPresent()) {
             userInfoEntity = result.get();
             logger.info(userInfoEntity);
-        }else {
+        } else {
             logger.error("Did not find userid" + userId);
             throw new RuntimeException("Did not find userid" + userId);
         }
@@ -58,6 +59,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     /**
      * 更新UserInfoEntity的Lastlogindatetime
+     *
      * @param userInfoEntity UserInfoEntity
      * @author si1206 Sam Chen
      * @date 2021/08/17

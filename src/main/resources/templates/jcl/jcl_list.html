@@ -9,9 +9,11 @@
 <body>
 <table border="1" cellpadding="1" cellspacing="1" style="width:850px">
     <tr>
-        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl/jcl_home}" style="color: azure">查詢可執行之AD</a></th>
+        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl/jcl_home}"
+                                                             style="color: azure">查詢可執行之AD</a></th>
         <th scope="col" style="background-color:#6699cc;"><a href="#" style="color: azure">測試個案查詢</a></th>
-        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl_sequence/jcl_sequence_home}" style="color: azure">執行順序查詢</a></th>
+        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl_sequence/jcl_sequence_home}"
+                                                             style="color: azure">執行順序查詢</a></th>
     </tr>
 </table>
 
@@ -40,7 +42,7 @@
             <strong>
                 <span style="font-size:16px">查詢結果
                 </span>
-                <span  th:text="${allJclList.totalElements} + '筆資料'">
+                <span th:text="${allJclList.totalElements} + '筆資料'">
                 </span>
                 <br>
                 <span th:if="${allJclList.totalElements} == 0" th:text="查無符合條件資料" style="color: red">
@@ -48,7 +50,8 @@
                 <span th:if="${allJclList.totalElements} != 0" th:text="目前在+${page+1}+頁"></span>
                 <br>
                 頁數: <span th:each="pages : ${pageList}">
-                     <a th:href="@{search(sprint=${sprint},adName=${adName},page=${pages})}" th:text="${pages+1}" th:id="page+${pages+1}" ></a>
+                     <a th:href="@{search(sprint=${sprint},adName=${adName},page=${pages})}" th:text="${pages+1}"
+                        th:id="page+${pages+1}"></a>
                  </span>
             </strong>
         </caption>
@@ -84,13 +87,13 @@
     </table>
 </form>
 <script th:inline="javascript">
-    window.onload= function clickPage(){
+    window.onload = function clickPage() {
         const page = window.location.search;
-        let currentPage = page.charAt(page.length -1);
+        let currentPage = page.charAt(page.length - 1);
         let pageNum = Number(currentPage) + 1;
         let pageId = "page" + pageNum
         let selectPageId = document.getElementById(pageId);
-        selectPageId.style.display="none"
+        selectPageId.style.display = "none"
     }
 
 </script>

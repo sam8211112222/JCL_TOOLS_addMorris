@@ -383,7 +383,7 @@ public class AdJclExeorderService {
         Map<String, Object> params = new HashMap<>();
         params.put("jcl", jcl);
         List<Map<String, Object>> list = adJclExeroderRepository.query(sql, params);
-        List<CheckPointJoinTestCaseModel>checkPointJoinTestCaseModelList  = JSONObject.parseArray(JSONObject.toJSONString(list), CheckPointJoinTestCaseModel.class);
+        List<CheckPointJoinTestCaseModel> checkPointJoinTestCaseModelList = JSONObject.parseArray(JSONObject.toJSONString(list), CheckPointJoinTestCaseModel.class);
 
         return checkPointJoinTestCaseModelList;
     }

@@ -24,7 +24,8 @@
 <body>
 <table border="1" cellpadding="1" cellspacing="1" style="width:850px">
     <tr>
-        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl/jcl_home}" style="color: azure">查詢可執行之AD</a>
+        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl/jcl_home}"
+                                                             style="color: azure">查詢可執行之AD</a>
         </th>
         <th scope="col" style="background-color:#6699cc;"><a href="#" style="color: azure">測試個案查詢</a></th>
         <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl_sequence/jcl_sequence_home}"
@@ -223,7 +224,7 @@
                 let spanInnerText = spans[j].innerText;
                 if (jclKeyword === spanInnerText) {
                     spans[j].setAttribute("class", "badge bg-secondary")
-                    spans[j].setAttribute("name","selfJcl")
+                    spans[j].setAttribute("name", "selfJcl")
                 }
             }
         }
@@ -308,10 +309,10 @@
                     let spanHTML = spans[i].innerHTML
                     let breakPointDetail = `http://localhost:8081/jcl_sequence/findBreakPointDetail/${spanHTML}`
                     let a = document.createElement("a")
-                    a.href=breakPointDetail
-                    a.innerText="暫停：DB比對斷點"
-                    a.style.color="white"
-                    a.target="_blank"
+                    a.href = breakPointDetail
+                    a.innerText = "暫停：DB比對斷點"
+                    a.style.color = "white"
+                    a.target = "_blank"
                     let br = document.createElement("br")
                     spans[i].appendChild(br);
                     spans[i].appendChild(a);
@@ -330,16 +331,16 @@
         let spans = document.querySelectorAll('[name="selfJcl"]')
         for (i = 0; i < spans.length; i++) {
             for (j = 0; j < checkPointArray.length; j++) {
-                if (spans[i].innerText.match(checkPointArray[j]) ) {
+                if (spans[i].innerText.match(checkPointArray[j])) {
                     let innerText = spans[i].innerText
                     let innerArray = innerText.split("\n")
                     let jcl = innerArray[0]
                     let checkPointDetail = `http://localhost:8081/jcl_sequence/findCheckPointDetail/${jcl}`
                     let a = document.createElement("a")
-                    a.href=checkPointDetail
-                    a.innerText="暫停：檔案查核點"
-                    a.style.color="white"
-                    a.target="_blank"
+                    a.href = checkPointDetail
+                    a.innerText = "暫停：檔案查核點"
+                    a.style.color = "white"
+                    a.target = "_blank"
                     let br = document.createElement("br")
                     spans[i].appendChild(br);
                     spans[i].appendChild(a);
