@@ -67,37 +67,53 @@ public class JclServiceImpl implements JclService {
     /**
      * 依條件查詢JCL列表
      *
-     * @param sprint sprint參數的值
+     * @param testType testType參數的值
+     * @param systemOp systemOp參數的值
      * @param adName adName參數的值
      * @return listJclModel
      * @author si1206 Sam Chen
      * @date 2021/08/04
      */
     @Override
-    public List<AdJclModel> listAllJclByCondition(String adName, String sprint, String codeTypeId) {
+    public List<AdJclModel> listAllJclByCondition(String testType,String systemOp,String adName) {
         logger.info("Call listAllJclByCondition()");
 
-        //如果sprint=All, 將sprint的值轉換成空字串
-        if ("All".equals(sprint)) {
-            sprint = "";
-            logger.info("adName = " + adName + " sprint = " + sprint + "codeTypeId = " + codeTypeId);
-
-            List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(adName, sprint, codeTypeId);
-            logger.info("Get listJcl from DB");
-
-            List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
-            logger.debug(listJclModel);
-            return listJclModel;
+        //如果testType=All, 將testType的值轉換成空字串
+        if ("All".equals(testType)) {
+            testType = "";
+            if ("All".equals(systemOp)){
+                systemOp = "";
+                logger.info("testType = " + testType + " systemOp = " + systemOp + "adName = " + adName);
+                List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(testType, systemOp, adName);
+                logger.info("Get listJcl from DB");
+                List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
+                logger.debug(listJclModel);
+                return listJclModel;
+            }else {
+                logger.info("testType = " + testType + " systemOp = " + systemOp + "adName = " + adName);
+                List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(testType, systemOp, adName);
+                logger.info("Get listJcl from DB");
+                List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
+                logger.debug(listJclModel);
+                return listJclModel;
+            }
         } else {
-
-            logger.info("adName = " + adName + " sprint = " + sprint + "codeTypeId = " + codeTypeId);
-
-            List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(adName, sprint, codeTypeId);
-            logger.info("Get listJcl from DB");
-
-            List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
-            logger.debug(listJclModel);
-            return listJclModel;
+            if ("All".equals(systemOp)){
+                systemOp = "";
+                logger.info("testType = " + testType + " systemOp = " + systemOp + "adName = " + adName);
+                List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(testType, systemOp, adName);
+                logger.info("Get listJcl from DB");
+                List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
+                logger.debug(listJclModel);
+                return listJclModel;
+            }else {
+                logger.info("testType = " + testType + " systemOp = " + systemOp + "adName = " + adName);
+                List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(testType, systemOp, adName);
+                logger.info("Get listJcl from DB");
+                List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
+                logger.debug(listJclModel);
+                return listJclModel;
+            }
         }
     }
 

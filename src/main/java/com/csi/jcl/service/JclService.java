@@ -18,7 +18,7 @@ public interface JclService {
 
     public List<AdJclEntity> findJclByAd(String adName);
 
-    public List<AdJclModel> listAllJclByCondition(String adName, String sprint,String codeTypeId);
+    public List<AdJclModel> listAllJclByCondition(String testType,String systemOp,String adName);
 
     public List<UserInfoEntity> findAll();
 
