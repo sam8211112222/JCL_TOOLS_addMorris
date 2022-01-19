@@ -202,9 +202,17 @@
             if (
                 usernameText.trim() !== "" &&
                 passwordText.trim() !== "" &&
-                imageCodeText.trim() !== ""
+                imageCodeText.trim() !== ""&&
+                imageCodeText === document.cookie.split('=')[1]
             ) {
                 document.getElementById("loginForm").submit();
+            }else if (
+                usernameText.trim() !== "" &&
+                passwordText.trim() !== "" &&
+                imageCodeText.trim() !== ""&&
+                imageCodeText !== document.cookie.split('=')[1]
+            ){
+                alert("驗證碼輸入錯誤!")
             }
         }
     </script>

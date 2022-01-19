@@ -1,10 +1,13 @@
 package com.csi.jcl.controller;
 
 import com.csi.jcl.entity.AdJclEntity;
+import com.csi.jcl.entity.CodeListEntity;
 import com.csi.jcl.entity.UserInfoEntity;
 import com.csi.jcl.model.AdJclModel;
+import com.csi.jcl.service.CodeListService;
 import com.csi.jcl.service.JclService;
 import com.csi.jcl.service.UserInfoService;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -46,11 +52,13 @@ public class JclController {
      */
     private final JclService jclService;
     private final UserInfoService userInfoService;
+    private final CodeListService codeListService;
 
     @Autowired
-    public JclController(JclService jclService, UserInfoService userInfoService) {
+    public JclController(JclService jclService, UserInfoService userInfoService, CodeListService codeListService) {
         this.jclService = jclService;
         this.userInfoService = userInfoService;
+        this.codeListService = codeListService;
     }
 
     /**
@@ -63,7 +71,7 @@ public class JclController {
      * @return jcl_home.html
      */
     @GetMapping("/jcl_home")
-    public String hello(HttpSession httpSession) {
+    public String hello(HttpSession httpSession,Model model) {
 
         // 取得Session內的key, value
 //        Enumeration<String> names = httpSession.getAttributeNames();
@@ -92,6 +100,9 @@ public class JclController {
             userInfoService.updateInfo(userInfoEntity);
             httpSession.setAttribute("login","login");
         }
+        // 2021.11.24 新增SYSTEMTYPE條件 by Sam Chen
+        List<CodeListEntity> codeTypeIdEqualsSystemType = codeListService.findByCodeTypeIdEqualsSystemType();
+        model.addAttribute("codeTypeIdEqualsSystemType",codeTypeIdEqualsSystemType);
         return "jcl/jcl_home";
     }
 
@@ -111,13 +122,14 @@ public class JclController {
     public String searchAdJcl(Model model,
                               @RequestParam("sprint") String sprint,
                               @RequestParam("adName") String adName,
+                              @RequestParam("codeTypeId")String codeTypeId,
                               Pageable pageable,
                               @RequestParam("page") Integer page) {
 
         logger.info("jcl/search?sprint=" + sprint + "&adName=" + adName + "&page=" + page);
 
         // 從jclService的listAllJclByCondition取得資料
-        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(adName, sprint);
+        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(adName, sprint,codeTypeId);
         logger.info("Get adJclModelList");
 
         // 計算資料的起始與結束位置
@@ -134,7 +146,10 @@ public class JclController {
             pageList.add(i);
         }
 
+        // 2021.11.24 新增SYSTEMTYPE條件 by Sam Chen
+        List codeTypeIdEqualsSystemType = codeListService.findByCodeTypeIdEqualsSystemType();
         // 加入model
+        model.addAttribute("codeTypeIdEqualsSystemType",codeTypeIdEqualsSystemType);
         model.addAttribute("allJclList", allJclList);
         model.addAttribute("sprint", sprint);
         model.addAttribute("adName", adName);
@@ -170,5 +185,28 @@ public class JclController {
 
         // 導回jcl_detail頁面
         return "jcl/jcl_detail";
+    }
+
+    /**
+     * 依條件查詢JCL列表並產出excel表格
+     *
+     * @author si1206 Sam Chen
+     * @date 2021/11/29
+     * @param sprint sprint參數的值
+     * @param adName adName參數的值
+     */
+    @GetMapping("/generateExcel")
+    public void exportExcel(@RequestParam("sprint") String sprint,
+                            @RequestParam("adName") String adName,
+                            @RequestParam("codeTypeId")String codeTypeId,
+                            HttpServletResponse response) throws IOException {
+
+        // 從jclService的listAllJclByCondition取得資料
+        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(adName, sprint,codeTypeId);
+//        String fileName = "sprint="+sprint+"adName="+adName+"codeTypeId="+codeTypeId;
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=jcl.xlsx");
+        ByteArrayInputStream stream = jclService.generateExcel(adJclModelList);
+        IOUtils.copy(stream, response.getOutputStream());
     }
 }

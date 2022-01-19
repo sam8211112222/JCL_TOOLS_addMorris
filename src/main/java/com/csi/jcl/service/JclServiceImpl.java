@@ -8,9 +8,17 @@ import com.csi.jcl.entity.UserInfoEntity;
 import com.csi.jcl.model.AdJclModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,29 +74,29 @@ public class JclServiceImpl implements JclService {
      * @date 2021/08/04
      */
     @Override
-    public List<AdJclModel> listAllJclByCondition(String adName, String sprint) {
+    public List<AdJclModel> listAllJclByCondition(String adName, String sprint, String codeTypeId) {
         logger.info("Call listAllJclByCondition()");
 
         //如果sprint=All, 將sprint的值轉換成空字串
         if ("All".equals(sprint)) {
             sprint = "";
-            logger.info("adName = " + adName + " sprint = " + sprint);
+            logger.info("adName = " + adName + " sprint = " + sprint + "codeTypeId = " + codeTypeId);
 
-            List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(adName, sprint);
+            List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(adName, sprint, codeTypeId);
             logger.info("Get listJcl from DB");
 
             List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
-            logger.info(listJclModel);
+            logger.debug(listJclModel);
             return listJclModel;
         } else {
 
-            logger.info("adName = " + adName + " sprint = " + sprint);
+            logger.info("adName = " + adName + " sprint = " + sprint + "codeTypeId = " + codeTypeId);
 
-            List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(adName, sprint);
+            List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(adName, sprint, codeTypeId);
             logger.info("Get listJcl from DB");
 
             List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
-            logger.info(listJclModel);
+            logger.debug(listJclModel);
             return listJclModel;
         }
     }
@@ -99,6 +107,72 @@ public class JclServiceImpl implements JclService {
         List<UserInfoEntity> list = userInfoRepository.findAll();
 
         return list;
+    }
+
+    /**
+     * 依條件產生Excel檔
+     * @param listAllJclByCondition
+     * @return
+     */
+    @Override
+    public ByteArrayInputStream generateExcel(List<AdJclModel> listAllJclByCondition) {
+        // 輸出流
+        FileOutputStream out = null;
+
+        // 建立Excel需要的東西
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+        // 目前的Sheet
+        XSSFSheet sheet = workbook.createSheet("查詢可執行之AD");
+
+        // 表頭的資料
+        XSSFRow firstRow = sheet.createRow(0);
+
+        // 目前的RowIndex
+        int rowIndex = 1;
+
+        XSSFRow currentRow;
+
+        // 用Map存放第一列的欄位名稱
+        Map<String, Integer> headerMap = new HashMap<String, Integer>();
+        headerMap.put("SPRINT",0);
+        headerMap.put("AD",1);
+        headerMap.put("AD Description",2);
+        headerMap.put("CHT AP",3);
+        headerMap.put("CHT DC",4);
+        headerMap.put("子系統",5);
+        headerMap.put("JCL數量",6);
+
+        firstRow.createCell(0).setCellValue("SPRINT");
+        firstRow.createCell(1).setCellValue("AD");
+        firstRow.createCell(2).setCellValue("AD Description");
+        firstRow.createCell(3).setCellValue("CHT AP");
+        firstRow.createCell(4).setCellValue("CHT DC");
+        firstRow.createCell(5).setCellValue("子系統");
+        firstRow.createCell(6).setCellValue("JCL數量");
+
+
+
+        for (int i = 0; i < listAllJclByCondition.size(); i++){
+            XSSFRow xssfRow = sheet.createRow(rowIndex+i);
+            currentRow = sheet.getRow(rowIndex+i);
+            currentRow.createCell(headerMap.get("SPRINT")).setCellValue(listAllJclByCondition.get(i).getSprint());
+            currentRow.createCell(headerMap.get("AD")).setCellValue(listAllJclByCondition.get(i).getAd());
+            currentRow.createCell(headerMap.get("AD Description")).setCellValue(listAllJclByCondition.get(i).getAddesc());
+            currentRow.createCell(headerMap.get("CHT AP")).setCellValue(listAllJclByCondition.get(i).getCht_ap());
+            currentRow.createCell(headerMap.get("CHT DC")).setCellValue(listAllJclByCondition.get(i).getCht_dc());
+            currentRow.createCell(headerMap.get("子系統")).setCellValue(listAllJclByCondition.get(i).getSystemtype());
+            currentRow.createCell(headerMap.get("JCL數量")).setCellValue(listAllJclByCondition.get(i).getJclcout());
+        }
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            workbook.write(outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ByteArrayInputStream(outputStream.toByteArray());
+
     }
 
 }

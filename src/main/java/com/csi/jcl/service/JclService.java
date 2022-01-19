@@ -4,6 +4,7 @@ import com.csi.jcl.entity.AdJclEntity;
 import com.csi.jcl.entity.UserInfoEntity;
 import com.csi.jcl.model.AdJclModel;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 /**
@@ -17,8 +18,9 @@ public interface JclService {
 
     public List<AdJclEntity> findJclByAd(String adName);
 
-    public List<AdJclModel> listAllJclByCondition(String adName, String sprint);
+    public List<AdJclModel> listAllJclByCondition(String adName, String sprint,String codeTypeId);
 
     public List<UserInfoEntity> findAll();
 
+    public ByteArrayInputStream generateExcel(List<AdJclModel> listAllJclByCondition);
 }

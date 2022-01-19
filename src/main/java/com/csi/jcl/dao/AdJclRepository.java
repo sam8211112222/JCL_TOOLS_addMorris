@@ -43,7 +43,23 @@ public interface AdJclRepository extends PagingAndSortingRepository<AdJclEntity,
             "WHERE A1.AD NOT IN (Select AD FROM ad_jcl_exeorder WHERE BEFOREAD IS NOT NULL) " +
             "and ( :adName is null OR A1.AD = :adName)" +
             "and ( :sprint is null OR A1.SPRINT = :sprint )" +
+            "and ( :codeTypeId is null OR A1.SYSTEMTYPE = :codeTypeId)" +
             "Order by A1.Sprint,A1.SYSTEMTYPE,A1.AD")
-    public List<Map<String, Object>> listAllJclByCondition(@Param("adName") String adName, @Param("sprint") String sprint);
+    public List<Map<String, Object>> listAllJclByCondition(@Param("adName") String adName, @Param("sprint") String sprint,@Param("codeTypeId") String codeTypeId);
+
+    /**
+     * 依條件查詢JCL列表
+     *
+     *
+     * @author si1255
+     * @date 2021/10/22
+     */
+
+    @Query(nativeQuery = true, value = "select * from ad_jcl where ad = ?1 and jcl = ?2")
+    AdJclEntity findByAdAndJcl(String ad, String jcl);
+
+
+
+
 
 }
