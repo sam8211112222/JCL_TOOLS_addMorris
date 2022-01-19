@@ -46,11 +46,13 @@ public class AdJclEntity {
     @Column(name = "CHT")
     private String cht;
 
+    @Column(name = "SYSTEM_OPERATION")
+    private String systemOp;
 
     public AdJclEntity() {
     }
 
-    public AdJclEntity(String sprint, String ad, String addesc, String jcl, String jcldesc, String jid, String systemtype, String systemdesc, String cht) {
+    public AdJclEntity(String sprint, String ad, String addesc, String jcl, String jcldesc, String jid, String systemtype, String systemdesc, String cht, String systemOp) {
         this.sprint = sprint;
         this.ad = ad;
         this.addesc = addesc;
@@ -60,6 +62,7 @@ public class AdJclEntity {
         this.systemtype = systemtype;
         this.systemdesc = systemdesc;
         this.cht = cht;
+        this.systemOp = systemOp;
     }
 
     public String getSprint() {
@@ -134,6 +137,14 @@ public class AdJclEntity {
         this.cht = cht;
     }
 
+    public String getSystemOp() {
+        return systemOp;
+    }
+
+    public void setSystemOp(String systemOp) {
+        this.systemOp = systemOp;
+    }
+
     @Override
     public String toString() {
         return "AdJclEntity{" +
@@ -146,6 +157,7 @@ public class AdJclEntity {
                 ", systemtype='" + systemtype + '\'' +
                 ", systemdesc='" + systemdesc + '\'' +
                 ", cht='" + cht + '\'' +
+                ", systemOp='" + systemOp + '\'' +
                 '}';
     }
 }

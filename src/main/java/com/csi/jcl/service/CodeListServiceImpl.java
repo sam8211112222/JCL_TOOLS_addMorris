@@ -35,8 +35,12 @@ public class CodeListServiceImpl implements CodeListService {
 
     @Override
     public List<CodeListEntity> findByCodeTypeIdEqualsSystemType() {
-//        logger.info(codeListRepository.findByCodeTypeIdEqualsSystemType());
         return  codeListRepository.findByCodeTypeIdEqualsSystemType();
+    }
+
+    @Override
+    public List<CodeListEntity> findByCodeTypeIdSystemOperation() {
+        return codeListRepository.findByCodeTypeIdSystemOperation();
     }
 
 }

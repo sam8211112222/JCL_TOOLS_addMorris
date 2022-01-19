@@ -28,17 +28,33 @@
 <p><span style="font-size:16px"><strong>查詢條件</strong></span></p>
 
 <form th:action="@{/jcl/search}">Sprint：
-    <input checked="checked" name="sprint" type="radio" value="All"/>All
-    <input name="sprint" type="radio" value="sprint1"/>Sprint1
-    <input name="sprint" type="radio" value="sprint2"/>Sprint2
-    <input name="sprint" type="radio" value="sprint3"/>Sprint3
+<!--    <input checked="checked" name="sprint" type="radio" value="All"/>All-->
+<!--    <input name="sprint" type="radio" value="sprint1"/>Sprint1-->
+<!--    <input name="sprint" type="radio" value="sprint2"/>Sprint2-->
+<!--    <input name="sprint" type="radio" value="sprint3"/>Sprint3-->
+<!--    <br/>-->
+<!--    <label for="codeTypeId">子系統:&nbsp;</label><select class="form-control" name="codeTypeId" id="codeTypeId">-->
+<!--        <option selected="selected" value="">選擇</option>-->
+<!--        <option th:each="systemType:${codeTypeIdEqualsSystemType}"-->
+<!--                th:value="${systemType.getCodeId()}"-->
+<!--                th:text="${systemType.getCodeId()}"></option>-->
+<!--        &lt;!&ndash;        th:selected="${systemType.getCodeId()} eq ${systemType}"></option>&ndash;&gt;-->
+<!--    </select>-->
+<!--    <br/>-->
+    <label for="testType">測試階段分類:&nbsp;</label>
+    <select class="form-control" name="testType" id="testType">
+        <option selected="selected" value="All">選擇</option>
+        <option th:each="testType:${codeTypeIdEqualsSystemType}"
+                th:value="${testType.getCodeTypeId()}"
+                th:text="${testType.getCodeTypeId()}"></option>
+    </select>
     <br/>
-    <label for="codeTypeId">子系統:&nbsp;</label><select class="form-control" name="codeTypeId" id="codeTypeId">
-        <option selected="selected" value="">選擇</option>
-        <option th:each="systemType:${codeTypeIdEqualsSystemType}"
-                th:value="${systemType.getCodeId()}"
-                th:text="${systemType.getCodeId()}"></option>
-        <!--        th:selected="${systemType.getCodeId()} eq ${systemType}"></option>-->
+    <label for="systemOp">系統作業類別 :&nbsp;</label>
+    <select class="form-control" name="systemOp" id="systemOp">
+        <option selected="selected" value="All">選擇</option>
+        <option th:each="systemOp:${codeTypeIdSystemOperation}"
+                th:value="${systemOp.getCodeTypeId()}"
+                th:text="${systemOp.getCodeTypeId()}"></option>
     </select>
     <br/>
     AD：<input size="16" type="search" name="adName" placeholder="以AD名稱搜尋"/><br/>
@@ -75,26 +91,19 @@
         </caption>
         <thead>
         <tr>
-            <th scope="col" style="background-color: rgb(204, 255, 153);">SPRINT</th>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">系統作業類別</th>
             <th scope="col" style="background-color: rgb(204, 255, 153);">AD</th>
             <th scope="col" style="background-color: rgb(204, 255, 153);">AD Description</th>
-            <th scope="col" style="background-color: rgb(204, 255, 153);">CHT AP</th>
-            <th scope="col" style="background-color: rgb(204, 255, 153);">CHT DC</th>
-            <th scope="col" style="background-color: rgb(204, 255, 153);">子系統</th>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">CHT OWNER</th>
             <th scope="col" style="background-color: rgb(204, 255, 153);">JCL數量</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="allJclLists : ${allJclList}">
-            <td th:text="${allJclLists.sprint}"></td>
+            <td th:text="${allJclLists.s}"></td>
             <td th:text="${allJclLists.ad}"></td>
             <td th:text="${allJclLists.addesc}"></td>
-            <td th:text="${allJclLists.cht_ap}"></td>
-            <td th:text="${allJclLists.cht_dc}"></td>
-            <td th:switch="${allJclLists.systemdesc == null}">
-                <span th:case="true" th:text="${allJclLists.systemtype}"></span>
-                <span th:case="false" th:text="${allJclLists.systemtype}+${allJclLists.systemdesc}"></span>
-            </td>
+            <td th:text="${allJclLists.cht}"></td>
             <td>
                 <a th:href="@{searchJclDetail/{ad}(ad = ${allJclLists.ad})}" target="_blank">
                     <span th:text="${allJclLists.jclcout}"></span>

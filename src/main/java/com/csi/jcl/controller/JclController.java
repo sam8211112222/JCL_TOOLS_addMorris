@@ -100,9 +100,12 @@ public class JclController {
             userInfoService.updateInfo(userInfoEntity);
             httpSession.setAttribute("login","login");
         }
-        // 2021.11.24 新增SYSTEMTYPE條件 by Sam Chen
+        // 2022.01.19 新增SYSTEMTYPE條件 by Sam Chen
         List<CodeListEntity> codeTypeIdEqualsSystemType = codeListService.findByCodeTypeIdEqualsSystemType();
+        List<CodeListEntity> codeTypeIdSystemOperation = codeListService.findByCodeTypeIdSystemOperation();
         model.addAttribute("codeTypeIdEqualsSystemType",codeTypeIdEqualsSystemType);
+        model.addAttribute("codeTypeIdSystemOperation",codeTypeIdSystemOperation);
+
         return "jcl/jcl_home";
     }
 
@@ -112,7 +115,8 @@ public class JclController {
      * @author si1206 Sam Chen
      * @date 2021/08/04
      * @param model 傳入Thymeleaf的資料
-     * @param sprint sprint參數的值
+     * @param testType testType參數的值
+     * @param systemOp systemOp參數的值
      * @param adName adName參數的值
      * @param pageable 單頁內容總數
      * @param page 頁面總數
@@ -120,16 +124,14 @@ public class JclController {
      */
     @GetMapping("/search")
     public String searchAdJcl(Model model,
-                              @RequestParam("sprint") String sprint,
-                              @RequestParam("adName") String adName,
-                              @RequestParam("codeTypeId")String codeTypeId,
+                              @RequestParam("testType") String testType,
+                              @RequestParam("systemOp") String systemOp,
+                              @RequestParam("adName")String adName,
                               Pageable pageable,
                               @RequestParam("page") Integer page) {
 
-        logger.info("jcl/search?sprint=" + sprint + "&adName=" + adName + "&page=" + page);
-
         // 從jclService的listAllJclByCondition取得資料
-        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(adName, sprint,codeTypeId);
+        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(testType, systemOp,adName);
         logger.info("Get adJclModelList");
 
         // 計算資料的起始與結束位置
@@ -146,16 +148,20 @@ public class JclController {
             pageList.add(i);
         }
 
-        // 2021.11.24 新增SYSTEMTYPE條件 by Sam Chen
-        List codeTypeIdEqualsSystemType = codeListService.findByCodeTypeIdEqualsSystemType();
+        // 2022.01.19 新增SYSTEMTYPE條件 by Sam Chen
+        List<CodeListEntity> codeTypeIdEqualsSystemType = codeListService.findByCodeTypeIdEqualsSystemType();
+        List<CodeListEntity> codeTypeIdSystemOperation = codeListService.findByCodeTypeIdSystemOperation();
+
         // 加入model
         model.addAttribute("codeTypeIdEqualsSystemType",codeTypeIdEqualsSystemType);
+        model.addAttribute("codeTypeIdSystemOperation",codeTypeIdSystemOperation);
         model.addAttribute("allJclList", allJclList);
-        model.addAttribute("sprint", sprint);
+        model.addAttribute("testType", testType);
+        model.addAttribute("systemOp", systemOp);
         model.addAttribute("adName", adName);
         model.addAttribute("page", page);
         model.addAttribute("pageList", pageList);
-        logger.info("model " + model);
+        logger.debug("model " + model);
         // 導回jcl頁面
         return "jcl/jcl_list";
     }
