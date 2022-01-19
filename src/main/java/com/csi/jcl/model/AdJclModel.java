@@ -31,10 +31,12 @@ public class AdJclModel {
 
     private String cht_dc;
 
+    private String system_operation;
+
     public AdJclModel() {
     }
 
-    public AdJclModel(String sprint, String ad, String addesc, String systemtype, String systemdesc, String cht, Integer jclcout, String jid, String cht_ap, String cht_dc) {
+    public AdJclModel(String sprint, String ad, String addesc, String systemtype, String systemdesc, String cht, Integer jclcout, String jid, String cht_ap, String cht_dc, String system_operation) {
         this.sprint = sprint;
         this.ad = ad;
         this.addesc = addesc;
@@ -45,6 +47,7 @@ public class AdJclModel {
         this.jid = jid;
         this.cht_ap = cht_ap;
         this.cht_dc = cht_dc;
+        this.system_operation = system_operation;
     }
 
     public String getSprint() {
@@ -127,6 +130,14 @@ public class AdJclModel {
         this.cht_dc = cht_dc;
     }
 
+    public String getSystem_operation() {
+        return system_operation;
+    }
+
+    public void setSystem_operation(String system_operation) {
+        this.system_operation = system_operation;
+    }
+
     @Override
     public String toString() {
         return "AdJclModel{" +
@@ -140,6 +151,7 @@ public class AdJclModel {
                 ", jid='" + jid + '\'' +
                 ", cht_ap='" + cht_ap + '\'' +
                 ", cht_dc='" + cht_dc + '\'' +
+                ", system_operation='" + system_operation + '\'' +
                 '}';
     }
 }

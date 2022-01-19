@@ -187,7 +187,7 @@ public class JclController {
         model.addAttribute("ad", ad);
         model.addAttribute("addesc", addesc);
         model.addAttribute("listJclByAd", listJclByAd);
-        logger.info("model " + model);
+        logger.debug("model " + model);
 
         // 導回jcl_detail頁面
         return "jcl/jcl_detail";
