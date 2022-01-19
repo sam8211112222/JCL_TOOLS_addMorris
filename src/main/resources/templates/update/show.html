@@ -124,7 +124,7 @@
 						th:value="${#dates.format(new java.util.Date().getTime(),'yyyy-MM-dd HH:mm:ss')}" id="RDATETIME"
 						name="RDATETIME" />
 					<select class="form-control" name="TESTER_ID" id="TESTER_ID">
-						<option value="未選擇">選擇</option>
+						<option value=" ">選擇</option>
 						<option th:each="tester:${tester}" th:value="${tester.CODE_ID}" th:text="${tester.CODE_ID}"
 							th:selected="${tester.CODE_ID} eq ${allJclList.TESTER_ID}"></option>
 					</select>
@@ -132,7 +132,7 @@
 
 				<td>
 					<select class="form-control" name="STATUS" id="STATUS">
-						<option value="未選擇">選擇</option>
+						<option value=" ">選擇</option>
 						<option th:each="result:${result}" th:value="${result.CODE_ID}" th:text="${result.CODE_DESC}"
 							th:selected="${result.CODE_ID} eq ${allJclList.STATUS}"></option>
 					</select>
