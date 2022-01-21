@@ -277,23 +277,23 @@ public class ThisService {
 
 	public List<Map<String, String>> findbreakpoint(String ad) {
 		String y = "Y";
-		return findRepository.findbreakpoint(ad,y);
+		return findRepository.findbreakpoint(ad, y);
 	}
 
 	public List<Map<String, String>> findcheckpoint(String ad) {
 		String y = "Y";
-		return findRepository.findcheckpoint(ad,y);
+		return findRepository.findcheckpoint(ad, y);
 	}
 
 	public void savepara(String para, String tid) {
-		savetestcase.savepara(para,tid);
+		savetestcase.savepara(para, tid);
 	}
 
 	public Map<String, String> findpara(String tid) {
 		return findRepository.findpara(tid);
 	}
 
-	//report controller
+	// report controller
 	public List<Map<String, String>> findtestcase() {
 		return findRepository.findtestcase();
 	}
@@ -318,5 +318,96 @@ public class ThisService {
 		return findRepository.findDefectDone();
 	}
 
+	public List<Map<String, String>> findtest_type() {
+		// TODO Auto-generated method stub
+		return findRepository.findtest_type();
+	}
 
+	public List<Map<String, String>> findsystem_operation() {
+		// TODO Auto-generated method stub
+		return findRepository.findsystem_operation();
+	}
+
+	public List<Map<String, String>> findbatchonline(String ad, String jcl, String test_type, String program_type,
+			String system_operation, String online_operation) {
+//		System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+		if (!jcl.isEmpty() ) {
+			if ("BATCH".equals(program_type)) {
+				// batch
+				if ("ALL".equals(test_type)) {
+					if ("ALL".equals(system_operation)) {
+//						System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+						// batch test_typeall all
+						return findRepository.findallbatchallall(ad, jcl, program_type);
+
+					} else {
+//						System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+						// batch test_typeall NA
+						return findRepository.findallbatch(ad, jcl, program_type, system_operation);
+					}
+				} else {
+					if ("ALL".equals(system_operation)) {
+//						System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+						// batch test_typenotall system_operationall
+						return findRepository.findallbatchnaall(ad, jcl, test_type, program_type);
+					}
+//					System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+					// batch test_typenotall system_operationNotall
+					return findRepository.findbatch(ad, jcl, test_type, program_type, system_operation);
+				}
+			} else {
+
+				// online All
+				if ("ALL".equals(test_type)) {
+//					System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+					return findRepository.findonlineall(jcl, program_type, online_operation);
+				} else {
+//					System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+					// online Not all
+					return findRepository.findonline(jcl, test_type, program_type, online_operation);
+				}
+			}
+
+		} else {
+			
+			//no JCL
+			if ("BATCH".equals(program_type)) {
+				// batch
+				if ("ALL".equals(test_type)) {
+					if ("ALL".equals(system_operation)) {
+//						System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+						// batch test_typeall all
+						return findRepository.findallbatchallallnoJCL(ad,  program_type);
+
+					} else {
+//						System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+						// batch test_typeall NA
+						return findRepository.findallbatchnoJCL(ad,  program_type, system_operation);
+					}
+				} else {
+					if ("ALL".equals(system_operation)) {
+						// batch test_typenotall system_operationall
+//						System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+						return findRepository.findallbatchnaallnoJCL(ad, test_type, program_type);
+					}
+					// batch test_typenotall system_operationNotall
+//					System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+					return findRepository.findbatchnoJCL(ad, test_type, program_type, system_operation);
+				}
+			} else {
+
+				// online All
+				if ("ALL".equals(test_type)) {
+//					System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+					return findRepository.findonlineallnoJCL( program_type, online_operation);
+					
+				} else {
+					// online Not all
+//					System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+					return findRepository.findonlinenoJCL( test_type, program_type, online_operation);
+					
+				}
+			}
+		}
+	}
 }

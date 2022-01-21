@@ -25,6 +25,7 @@ public class AjaxUpdate {
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public String update(Model model, HttpServletRequest request,
 			@RequestParam(value = "ss", required = false) String SS) throws IOException {
+//		System.out.println("========================");
 		// 轉jsonarray
 //		JSONObject jsonObject=JSONObject.parseObject(SS);
 		JSONArray jsonArray = JSONArray.parseArray(SS);
@@ -34,6 +35,7 @@ public class AjaxUpdate {
 			JSONObject key = (JSONObject) jsonArray.get(i);
 			if (!" ".equals(key.get("STATUS")) || !" ".equals(key.get("TESTER_ID"))) {
 
+//				String status = key.get("STATUS").toString();
 				String status = "";
 				if ("未測試".equals(key.get("STATUS").toString())) {
 					status = "N";
@@ -43,14 +45,13 @@ public class AjaxUpdate {
 					status = "P";
 				} else if ("測試失敗".equals(key.get("STATUS").toString())) {
 					status = "F";
-				} else {
-					break;
-				}
+				} 
 				String tid = key.get("TID").toString();
 				String tester_id = key.get("TESTER_ID").toString();
 				String rdatetime = key.get("RDATETIME").toString();
 				String rid = "";
 
+//				System.out.println(tid+"======"+tester_id+"======"+rdatetime+"======"+rid);
 				thisService.saveresult(status, tid, tester_id, rdatetime, rid);
 				thisService.updatetestcase(tid, status, tester_id);
 			} else {

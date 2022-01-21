@@ -14,10 +14,6 @@ import com.csi.jcl.service.ThisService;
 @Repository
 public interface FindRepository extends PagingAndSortingRepository<TestCase,String>{
 
-	
-
-	
-
 	@Query(value="select ad,sprint,JCL,JCLDESC,tid from TESTCASE C where C.AD=?1 and C.SPRINT=?2 ",nativeQuery=true)
 	List<Map<ThisService, Object>>  findbyadsprint(String ad, String sprint);
 
@@ -174,5 +170,136 @@ public interface FindRepository extends PagingAndSortingRepository<TestCase,Stri
 			+ "where defect_list.issue_status ='CLOSE'\r\n"
 			+ "Group by testcase.systemtype",nativeQuery=true)
 	List<Map<String, String>> findDefectDone();
+
+	@Query(value="select * from code_list where code_type_id='TEST_TYPE'",nativeQuery=true)
+	List<Map<String, String>> findtest_type();
+
+	@Query(value="select * from code_list where code_type_id='SYSTEM_OPERATION'",nativeQuery=true)
+	List<Map<String, String>> findsystem_operation();
+
+	
+	
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.test_type=?3 and testcase.program_type=?4 and testcase.system_operation=?5 \r\n"
+			+ "                 and testcase.ad=?1 and testcase.jcl=?2 \r\n"
+			+ "                 ORDER by testcase.tid   ",nativeQuery=true)
+	List<Map<String, String>> findbatch(String ad, String jcl, String test_type, String program_type,
+			String system_operation);
+
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.jcl=?1 and testcase.test_type=?2 and testcase.program_type=?3 and testcase.system_operation=?4 \r\n"
+			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
+	List<Map<String, String>> findonline(String jcl, String test_type, String program_type,
+			String online_operation);
+
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.ad=?1 and testcase.jcl=?2  and testcase.program_type=?3 and testcase.system_operation=?4 \r\n"
+			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
+	List<Map<String, String>> findallbatch(String ad, String jcl, String program_type, String system_operation);
+
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.ad=?1 and testcase.jcl=?2  and testcase.program_type=?3  \r\n"
+			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
+	List<Map<String, String>> findallbatchallall(String ad, String jcl, String program_type);
+
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.test_type=?3 and testcase.program_type=?4  \r\n"
+			+ "                 and testcase.ad=?1 and testcase.jcl=?2 \r\n"
+			+ "                 ORDER by testcase.tid   ",nativeQuery=true)
+	List<Map<String, String>> findallbatchnaall(String ad, String jcl, String test_type, String program_type);
+
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.jcl=?1  and testcase.program_type=?3 and testcase.system_operation=?3 \r\n"
+			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
+	List<Map<String, String>> findonlineall(String jcl, String program_type, String online_operation);
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.ad=?1   and testcase.program_type=?2  \r\n"
+			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
+	List<Map<String, String>> findallbatchallallnoJCL(String ad, String program_type);
+
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.ad=?1  and testcase.program_type=?2 and testcase.system_operation=?3 \r\n"
+			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
+	List<Map<String, String>> findallbatchnoJCL(String ad, String program_type, String system_operation);
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.test_type=?2 and testcase.program_type=?3  \r\n"
+			+ "                 and testcase.ad=?1 \r\n"
+			+ "                 ORDER by testcase.tid   ",nativeQuery=true)
+	List<Map<String, String>> findallbatchnaallnoJCL(String ad, String test_type, String program_type);
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.test_type=?2 and testcase.program_type=?3 and testcase.system_operation=?4 \r\n"
+			+ "                 and testcase.ad=?1  \r\n"
+			+ "                 ORDER by testcase.tid   ",nativeQuery=true)
+	List<Map<String, String>> findbatchnoJCL(String ad, String test_type, String program_type, String system_operation);
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.program_type=?1 and testcase.system_operation=?2 \r\n"
+			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
+	List<Map<String, String>> findonlineallnoJCL(String program_type, String online_operation);
+	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
+			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
+			+ "					from testcase \r\n"
+			+ "				left join test_results on testcase.tid = test_results.tid \r\n"
+			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
+			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
+			+ "			     where testcase.test_type=?1 and testcase.program_type=?2 and testcase.system_operation=?3 \r\n"
+			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
+	List<Map<String, String>> findonlinenoJCL(String test_type, String program_type, String online_operation);
+
+
 	
 }

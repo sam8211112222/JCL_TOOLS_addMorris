@@ -33,17 +33,32 @@ public class Update {
 	ThisService thisService;
 
 	@RequestMapping("/su")
-	public String sus() {
+	public String sus(Model model) {
+		List<Map<String, String>> findtest_type = thisService.findtest_type();
+		List<Map<String, String>> findsystem_operation = thisService.findsystem_operation();
+		model.addAttribute("test_type",findtest_type);
+		model.addAttribute("system_operation",findsystem_operation);
+
 		return "update/su";
 	}
 
 //	@ResponseBody
 	@GetMapping(value = "/show")
 	public String find(Model model, HttpServletRequest request, Pageable pageable, @RequestParam("page") Integer page) {
+		String test_type= request.getParameter("test_type");
+		String program_type= request.getParameter("program_type");
+		String system_operation= request.getParameter("system_operation");
+		String online_operation= request.getParameter("online_operation");
 		String ad = request.getParameter("AD");
-		String sprint = request.getParameter("sprint");
+//		String sprint = request.getParameter("sprint");
 		String jcl = request.getParameter("JCL");
 
+//		System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+		List<Map<String, String>> findtest_type = thisService.findtest_type();
+		List<Map<String, String>> findsystem_operation = thisService.findsystem_operation();
+		
+
+		
 		if (ad != "" || !ad.equals(null)) {
 
 //		List<Map<ThisService, Object>> findad = thisService.findbyadsprint(ad, sprint,jcl);
@@ -54,8 +69,10 @@ public class Update {
 //		List<Map<ThisService, Object>> findinner = thisService.findinner();
 
 			// leftjoin查詢後的資料
-			List<Map<ThisService, Object>> findleftinner = thisService.findleftinner(ad, sprint, jcl);
-
+//			List<Map<ThisService, Object>> findleftinner = thisService.findleftinner(ad, sprint, jcl);
+			
+			List<Map<String, String>> findbatchonline =thisService.findbatchonline(ad,jcl,test_type,program_type,system_operation,online_operation);
+			
 			List<Map<String, String>> breakpoint = thisService.findbreakpoint(ad);
 
 			List<Map<String, String>> checkpoint = thisService.findcheckpoint(ad);
@@ -78,10 +95,10 @@ public class Update {
 
 			// 計算資料的起始與結束位置
 			int start = (int) pageable.getOffset();
-			int end = Math.min((start + pageable.getPageSize()), findleftinner.size());
+			int end = Math.min((start + pageable.getPageSize()), findbatchonline.size());
 
 			// 把adJclModelList轉換成Page型別
-			Page<TestCase> allJclList = new PageImpl(findleftinner.subList(start, end), pageable, findleftinner.size());
+			Page<TestCase> allJclList = new PageImpl(findbatchonline.subList(start, end), pageable, findbatchonline.size());
 
 			// 顯示頁面總數
 			List<Integer> pageList = new ArrayList<Integer>();
@@ -93,11 +110,17 @@ public class Update {
 			model.addAttribute("result", findtestresult);
 			model.addAttribute("tester", findtester);
 			model.addAttribute("allJclList", allJclList);
-			model.addAttribute("sprint", sprint);
+//			model.addAttribute("sprint", sprint);
 			model.addAttribute("adName", ad);
 			model.addAttribute("page", page);
 			model.addAttribute("pageList", pageList);
 			model.addAttribute("jcl", jcl);
+			model.addAttribute("test_type",findtest_type);
+			model.addAttribute("system_operation",findsystem_operation);
+			model.addAttribute("test_type1", test_type);
+			model.addAttribute("program_type1", program_type);
+			model.addAttribute("system_operation1", system_operation);
+			model.addAttribute("online_operation1", online_operation);
 //		model.addAttribute("havetime", findleftinner);
 
 		}

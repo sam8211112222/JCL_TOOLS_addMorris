@@ -11,7 +11,7 @@
 	<script type="text/javascript" th:inline="none">
 
 		function tofind() {
-			if (AD.value == "") {
+			if (program_type.value=="BATCH" && AD.value == "") {
 				alert("請輸入")
 			} else {
 				var form1 = document.form1;
@@ -21,7 +21,7 @@
 		};
 
 		function toupdate() {
-			if (AD.value == "") {
+			if (program_type.value=="BATCH" && AD.value == "") {
 				alert("請輸入")
 			} else {
 				var form1 = document.form1;
@@ -55,23 +55,37 @@
 
 	<h2>查詢條件</h2>
 	<form name="form1" action="" method="get">
-		Sprint :
-		<input type="radio" id="all" name="sprint" value="ALL" checked>
-		<label for="all">ALL</label>
-		<input type="radio" id="sprint1" name="sprint" value="sprint1">
-		<label for="sprint1">sprint1</label>
-		<input type="radio" id="sprint2" name="sprint" value="sprint2">
-		<label for="sprint2">sprint2</label>
-		<input type="radio" id="sprint3" name="sprint" value="sprint3">
-		<label for="sprint3">sprint3</label><br>
+		測試階段分類 :
+		<select class="form-control" name="test_type" id="test_type">
+			<option value="ALL">ALL</option>
+			<option th:each="test_type:${test_type}" th:value="${test_type.CODE_ID}" th:text="${test_type.CODE_DESC}"></option>
+		</select><br>
+		程式作業類別 :
+		<select class="form-control" name="program_type" id="program_type">
+			<option value="BATCH">批次作業</option>
+			<option value="ONLINE">線上作業</option>
+		</select><br>
+		批次系統作業類別 :
+		<select class="form-control" name="system_operation" id="system_operation">
+			<option value="ALL">ALL</option>
+			<option th:each="system_operation:${system_operation}" th:value="${system_operation.CODE_DESC}" th:text="${system_operation.CODE_DESC}"></option>
+		</select><br>
+		線上交易作業類別 :
+		<select class="form-control" name="online_operation" id="online_operation">
+			<option value="CICS WEB">CICS WEB</option>
+			<option value="Data Power">Data Power</option>
+			<option value="Socke">Socket</option>
+			<option value="Web Service">Web Service</option>
+		</select><br>
+
 
 		AD :
 		<input type="text" name="AD" id="AD" required><br>
 		JCL :
 		<input type="text" name="JCL" required><br>
 
-		<input type="button" name="search" value="find" onclick="tofind()" />
-		<input type="button" name="update" value="update" onclick="toupdate()" />
+		<input type="button" name="search" value="sreach" onclick="tofind()">
+		<input type="button" name="update" value="batch update" onclick="toupdate()" />
 
 		<input hidden name="page" value="0">
 	</form>

@@ -44,6 +44,10 @@ public class Batch {
 		model.addAttribute("findtester",findtester);
 		model.addAttribute("findtestresult",findtestresult);
 		}else {
+			List<Map<String, String>> findtest_type = ThisService.findtest_type();
+			List<Map<String, String>> findsystem_operation = ThisService.findsystem_operation();
+			model.addAttribute("test_type",findtest_type);
+			model.addAttribute("system_operation",findsystem_operation);
 			return "update/su2";
 		}
 		
