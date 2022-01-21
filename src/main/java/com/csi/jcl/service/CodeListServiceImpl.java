@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 實作CodeListService功能
@@ -41,6 +42,18 @@ public class CodeListServiceImpl implements CodeListService {
     @Override
     public List<CodeListEntity> findByCodeTypeIdSystemOperation() {
         return codeListRepository.findByCodeTypeIdSystemOperation();
+    }
+
+    @Override
+    public List<CodeListEntity>  selectTestType() {
+        List<CodeListEntity> selectTestType= codeListRepository.findSeletTestType();
+       return selectTestType;
+    }
+
+    @Override
+    public List<CodeListEntity> findSystemOperation() {
+         List<CodeListEntity> selectSystemOperation= codeListRepository.findSystemOperation();;
+        return selectSystemOperation;
     }
 
 }

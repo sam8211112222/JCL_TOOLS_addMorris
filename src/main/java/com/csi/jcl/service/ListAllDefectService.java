@@ -4,6 +4,7 @@ import com.csi.jcl.model.DefectListAndAdJclModel;
 
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -16,6 +17,7 @@ import java.util.List;
 
 public interface ListAllDefectService {
 
-    public List<DefectListAndAdJclModel> listAllDefect(String sprint, String ad, String jcl, List<String> issueStatusList);
+    public List<DefectListAndAdJclModel> listAllDefect( String ad, String jcl, List<String> issueStatusList,String testType,String programType,String systemOperation);
+
 
 }

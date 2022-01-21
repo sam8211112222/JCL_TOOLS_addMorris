@@ -42,4 +42,11 @@ public interface CodeListRepository extends JpaRepository<CodeListEntity,String>
      */
     @Query(nativeQuery = true, value ="select * from code_list where code_type_id ='SYSTEM_OPERATION'")
     public List<CodeListEntity> findByCodeTypeIdSystemOperation();
+
+
+    @Query(nativeQuery = true, value ="select * from code_list where code_type_id='TEST_TYPE'")
+    public List<CodeListEntity>  findSeletTestType();
+
+    @Query(nativeQuery = true, value ="select * from code_list where code_type_id='SYSTEM_OPERATION'")
+    public List<CodeListEntity>  findSystemOperation();
 }

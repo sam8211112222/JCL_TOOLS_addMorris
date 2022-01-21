@@ -15,10 +15,12 @@
 
 <table border="1" cellpadding="1" cellspacing="1" style="width:900px">
     <tr>
-        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl/jcl_home}"><font color=#FFFFFF>查詢可執行之AD</font></a></th>
-       <th scope="col" style="background-color:#6699cc;"><a th:href="@{/su}" style="color: azure">測試個案查詢</a>
-			</th>
-        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl_sequence/jcl_sequence_home}"><font color=#FFFFFF>執行順序查詢</font></a></th>
+        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl/jcl_home}"><font
+                color=#FFFFFF>查詢可執行之AD</font></a></th>
+        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/su}" style="color: azure">測試個案查詢</a>
+        </th>
+        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl_sequence/jcl_sequence_home}"><font
+                color=#FFFFFF>執行順序查詢</font></a></th>
         <th scope="col" style="background-color:#6699cc;"><a th:href="@{/defect}"><font color=#FFFFFF>DEFECT維護及查詢</font></a>
         </th>
         <th scope="col" style="background-color:#6699cc;"><a th:href="@{/report}">
@@ -27,18 +29,48 @@
     </tr>
 </table>
 <p>
-<table border="0" cellpadding="1" cellspacing="1" style="width:900px; border-color:#3399ff">
+<table style="width:900px; border-color:#3399ff">
     <tbody>
     <tr>
         <td colspan="3" style="background-color:#ccccff"><strong>查詢條件</strong></td>
     </tr>
+    </tbody>
+</table>
+</p>
+<table border="0" cellpadding="1" cellspacing="1" style="width:900px; border-color:#3399ff">
 
-    <form th:action="@{/defectSearch}">Sprint：
-        <input checked="checked" name="sprint" type="radio" value="All"/>All
-        <input name="sprint" type="radio" value="sprint1"/>Sprint1
-        <input name="sprint" type="radio" value="sprint2"/>Sprint2
-        <input name="sprint" type="radio" value="sprint3"/>Sprint3
-        <br/>
+    <tbody>
+
+
+    <form th:action="@{/defectSearch}">
+        測試階段分類:<select name="testType" id="testType">
+        <option value="ALL">ALL</option>
+        <option th:each="selectTestType : ${selectTestType}" th:value="${selectTestType.codeId}"
+                th:text="${selectTestType.codeDesc}"
+        ></option>
+    </select>
+        </br>
+
+        程式作業類別:<select name="programType" id="programType">
+        <option value="BATCH">批次作業</option>
+        <option value="ONLINE">線上交易</option>
+    </select>
+        <br>
+        批次系統作業類別:<select name="systemOperation" id="systemOperation">
+        <option value="ALL">ALL</option>
+        <option th:each="selectSystemOperation : ${selectSystemOperation}" th:value="${selectSystemOperation.codeDesc}"
+                th:text="${selectSystemOperation.codeDesc}"
+        ></option>
+
+    </select>
+        <br>
+        線上交易作業類別:<select name="systemOperationOnline" id="systemOperationOnline">
+        <option value="CICS WEB">CICS WEB</option>
+        <option value="Data Power">Data Power</option>
+        <option value="Socket">Socket</option>
+        <option value="Web Service">Web Service</option>
+    </select>
+        <br>
         AD: <input size="16" type="search" name="ad" placeholder="以AD名稱搜尋"/><br/>
         JCL: <input size="16" type="search" name="jcl" placeholder="以JCL名稱搜尋"/><br/>
 

@@ -15,7 +15,7 @@ public interface DefectListRepository extends PagingAndSortingRepository<DefectL
     /**
      * 依條件查詢defectlist+ad_jcl+code_list列表
      *
-     * @param sprint sprint參數的值
+     *
      * @param ad ad參數的值
      * @param jcl jcl參數的值
      * @param issueStatusList issueStatusList 參數的值
@@ -23,21 +23,27 @@ public interface DefectListRepository extends PagingAndSortingRepository<DefectL
      * @date 2021/10/25
      */
 
-    @Query(nativeQuery = true, value = "SELECT DISTINCT DL.TEST_TYPE,A1.AD,A1.JCL,DL.ISSUE_KEY,DL.ISSUE_TYPE,DL.ISSUE_STATUS,CL.CODE_ID,CL.CODE_DESC,CL.CODE_TYPE_ID " +
-            "from DEFECT_LIST DL,AD_JCL A1,CODE_LIST CL " +
-            "WHERE DL.JID=A1.jid " +
+    @Query(nativeQuery = true, value = "SELECT DISTINCT DL.TEST_TYPE,AJ.AD,AJ.JCL,DL.ISSUE_KEY,DL.ISSUE_TYPE,DL.ISSUE_STATUS,CL.CODE_ID,CL.CODE_DESC,CL.CODE_TYPE_ID " +
+            "from DEFECT_LIST DL,AD_JCL AJ,CODE_LIST CL,TESTCASE TC " +
+            "WHERE DL.JID=AJ.jid " +
             "and DL.ISSUE_STATUS=CL.CODE_ID " +
-            "and ( :ad is null OR A1.AD = :ad) " +
-            "and ( :jcl is null OR A1.JCL = :jcl) " +
-            "and ( :sprint is null OR A1.SPRINT = :sprint ) " +
-            "and  DL.ISSUE_STATUS in :issueStatusList ")
-    public List<Map<String, Object>> listAllDefect(@Param("sprint") String sprint, @Param("ad") String ad, @Param("jcl") String jcl, @Param("issueStatusList") List<String> issueStatusList);
+            "and ( :ad is null OR AJ.AD = :ad) " +
+            "and ( :jcl is null OR AJ.JCL = :jcl) " +
+            "and ( :testType is null OR DL.TEST_TYPE = :testType ) " +
+            "and ( :systemOperation is null OR TC.SYSTEM_OPERATION = :systemOperation ) " +
+            "and  DL.ISSUE_STATUS in :issueStatusList " +
+            "and TC.AD = AJ.AD " +
+            "and TC.JCL = AJ.JCL " +
+            "and (TC.PROGRAM_TYPE =:programType)")
+    public List<Map<String, Object>> listAllDefect(
+            @Param("ad") String ad, @Param("jcl") String jcl, @Param("issueStatusList") List<String> issueStatusList,
+            @Param("testType") String testType,@Param("programType") String programType,@Param("systemOperation")String systemOperation);
 
 
     /**
      * 依條件查詢defectlist+ad_jcl+code_list列表
      *
-     * @param sprint sprint參數的值
+     *
      * @param ad ad參數的值
      * @param jcl jcl參數的值
      * @author si1255
@@ -46,13 +52,19 @@ public interface DefectListRepository extends PagingAndSortingRepository<DefectL
 
 
 
-    @Query(nativeQuery = true, value = "SELECT DISTINCT DL.TEST_TYPE,A1.AD,A1.JCL,DL.ISSUE_KEY,DL.ISSUE_TYPE,DL.ISSUE_STATUS,CL.CODE_ID,CL.CODE_DESC,CL.CODE_TYPE_ID " +
-            "from DEFECT_LIST DL,AD_JCL A1,CODE_LIST CL " +
-            "WHERE DL.JID=A1.jid " +
+    @Query(nativeQuery = true, value = "SELECT DISTINCT DL.TEST_TYPE,AJ.AD,AJ.JCL,DL.ISSUE_KEY,DL.ISSUE_TYPE,DL.ISSUE_STATUS,CL.CODE_ID,CL.CODE_DESC,CL.CODE_TYPE_ID " +
+            "from DEFECT_LIST DL,AD_JCL AJ,CODE_LIST CL,TESTCASE TC " +
+            "WHERE DL.JID=AJ.jid " +
             "and DL.ISSUE_STATUS=CL.CODE_ID " +
-            "and ( :ad is null OR A1.AD = :ad) " +
-            "and ( :jcl is null OR A1.JCL = :jcl) " +
-            "and ( :sprint is null OR A1.SPRINT = :sprint ) ")
-    public List<Map<String, Object>> listAllDefect123(@Param("sprint") String sprint, @Param("ad") String ad, @Param("jcl") String jcl);
+            "and ( :ad is null OR AJ.AD = :ad) " +
+            "and ( :jcl is null OR AJ.JCL = :jcl) " +
+            "and ( :testType is null OR DL.TEST_TYPE = :testType ) " +
+            "and ( :systemOperation is null OR TC.SYSTEM_OPERATION = :systemOperation ) " +
+            "and TC.AD = AJ.AD " +
+            "and TC.JCL = AJ.JCL " +
+            "and (TC.PROGRAM_TYPE =:programType)")
+    public List<Map<String, Object>> listAllDefect123(@Param("ad") String ad,
+                                                      @Param("jcl") String jcl,@Param("testType")String testType,
+                                                      @Param("programType") String programType,@Param("systemOperation")String systemOperation);
 
 }

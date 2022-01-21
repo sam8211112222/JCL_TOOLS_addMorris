@@ -45,94 +45,95 @@ public class UploadExcelServiceImpl implements UploadExcelService{
 
     //讀取上傳的EXCEL
     @Override
-    public String getExcel(MultipartFile file)  {
+    public String getExcel(MultipartFile file) {
 
-    try {
-        // TODO Auto-generated method stub
-        List<DefectListEntity> list = new ArrayList<>();
-        //把檔案轉成byte陣列
-        logger.info("file.getBytes()");
-        byte[] bytes = file.getBytes();
-        //byte陣列轉成ByteArrayInputStream
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        int rowInfo = 0;
+        try {
+            // TODO Auto-generated method stub
+            List<DefectListEntity> list = new ArrayList<>();
+            //把檔案轉成byte陣列
+            logger.info("file.getBytes()");
+            byte[] bytes = file.getBytes();
+            //byte陣列轉成ByteArrayInputStream
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
-        XSSFWorkbook workbook = new XSSFWorkbook(byteArrayInputStream);
+            XSSFWorkbook workbook = new XSSFWorkbook(byteArrayInputStream);
 
-        //得到上傳的表
-        XSSFSheet sheet = workbook.getSheetAt(0);
+            //得到上傳的表
+            XSSFSheet sheet = workbook.getSheetAt(0);
 
-        //獲取表的總行數
+            //獲取表的總行數
 
-        int num = sheet.getLastRowNum();
-
-
-        //總列數
-
-        int col = sheet.getRow(0).getLastCellNum();
+            int num = sheet.getLastRowNum();
 
 
-        //遍歷excel每一行
+            //總列數
 
-        for (int j = 1; j <= num; j++) {
-
-            Row row1 = sheet.getRow(j);
-
-            Cell cellIssueKey = row1.getCell(0);
-
-            Cell cellStatus = row1.getCell(2);
-
-            Cell cellAD = row1.getCell(5);
-
-            Cell cellJCL = row1.getCell(6);
-
-            Cell cellIssueType = row1.getCell(7);
+            int col = sheet.getRow(0).getLastCellNum();
 
 
-            CodeListEntity codeListEntity = new CodeListEntity();
+            //遍歷excel每一行
 
-            AdJclEntity adJclEntity = new AdJclEntity();
+            for (int j = 1; j <= num; j++) {
 
-            DefectListEntity defectListEntity = new DefectListEntity();
+                Row row1 = sheet.getRow(j);
+
+                Cell cellIssueKey = row1.getCell(0);
+
+                Cell cellStatus = row1.getCell(2);
+
+                Cell cellAD = row1.getCell(5);
+
+                Cell cellJCL = row1.getCell(6);
+
+                Cell cellIssueType = row1.getCell(7);
 
 
-            //取得JID
-            logger.info("adJclRepository.findByAdAndJcl");
-            adJclEntity = adJclRepository.findByAdAndJcl(cellAD.getStringCellValue(), cellJCL.getStringCellValue());
-            //取得CODE_ID
-            logger.info("codeListRepository.findByCodeDesc");
-            codeListEntity = codeListRepository.findByCodeDesc(cellStatus.getStringCellValue().toUpperCase());
+                CodeListEntity codeListEntity = new CodeListEntity();
 
-            //把資料寫入Defect_list資料表
-            defectListEntity.setTestType("1");
+                AdJclEntity adJclEntity = new AdJclEntity();
 
-            defectListEntity.setIssueKey(cellIssueKey.getStringCellValue());
+                DefectListEntity defectListEntity = new DefectListEntity();
 
-            defectListEntity.setJid(adJclEntity.getJid());
 
-            defectListEntity.setIssueType(cellIssueType.getStringCellValue());
+                //取得JID
+                logger.info("adJclRepository.findByAdAndJcl");
+                adJclEntity = adJclRepository.findByAdAndJcl(cellAD.getStringCellValue(), cellJCL.getStringCellValue());
+                //取得CODE_ID
+                logger.info("codeListRepository.findByCodeDesc");
+                codeListEntity = codeListRepository.findByCodeDesc(cellStatus.getStringCellValue().toUpperCase());
 
-            defectListEntity.setIssueStatus(codeListEntity.getCodeId());
+                //把資料寫入Defect_list資料表
+                defectListEntity.setTestType("1");
 
-            Date current = new Date();
-            defectListEntity.setIssueCreateDatetime(current);
-            logger.info("list.add(defectListEntity)");
-            list.add(defectListEntity);
+                defectListEntity.setIssueKey(cellIssueKey.getStringCellValue());
 
+                defectListEntity.setJid(adJclEntity.getJid());
+
+                defectListEntity.setIssueType(cellIssueType.getStringCellValue());
+
+                defectListEntity.setIssueStatus(codeListEntity.getCodeId());
+
+                Date current = new Date();
+                defectListEntity.setIssueCreateDatetime(current);
+                logger.info("list.add(defectListEntity)");
+                list.add(defectListEntity);
+                rowInfo = j;
+            }
+            logger.info("defectListRepository.saveAll(list)");
+            defectListRepository.saveAll(list);
+
+            String uploadStatus = "上傳成功";
+            return uploadStatus;
+        } catch (NullPointerException n) {
+            String uploadStatus = "內容錯誤！ 請確認第" + (rowInfo+1) + "行";
+            return uploadStatus;
+        } catch (EmptyFileException p) {
+            String uploadStatus = "請選擇要上傳的檔案";
+            return uploadStatus;
+        } catch (Exception e) {
+            String uploadStatus = "檔案格式或內容錯誤！";
+            return uploadStatus;
         }
-        logger.info("defectListRepository.saveAll(list)");
-        defectListRepository.saveAll(list);
-
-        String uploadStatus = "上傳成功";
-        return uploadStatus;
-    }catch (NullPointerException n){
-        String uploadStatus = "檔案格式或內容錯誤！";
-        return uploadStatus;
-    }catch(EmptyFileException p){
-        String uploadStatus = "請選擇要上傳的檔案";
-        return uploadStatus;
-    }catch (Exception e){
-        String uploadStatus = "檔案格式或內容錯誤！";
-        return uploadStatus;
-    }
     }
 }

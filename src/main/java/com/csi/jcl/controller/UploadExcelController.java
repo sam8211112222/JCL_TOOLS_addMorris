@@ -40,7 +40,9 @@ public class UploadExcelController {
 
             model.addAttribute("Message", "請選擇要上傳的檔案");
 
-        } else {
+        } else if(uploadStatus.contains("請確認")){
+            model.addAttribute("Message", uploadStatus);
+        }else {
             model.addAttribute("Message", "檔案格式或內容錯誤！");
         }
 

@@ -17,4 +17,6 @@ public interface CodeListService {
     List<CodeListEntity> getAllCodeList();
     List<CodeListEntity> findByCodeTypeIdEqualsSystemType();
     List<CodeListEntity> findByCodeTypeIdSystemOperation();
+    List<CodeListEntity> selectTestType();
+    List<CodeListEntity> findSystemOperation();
 }

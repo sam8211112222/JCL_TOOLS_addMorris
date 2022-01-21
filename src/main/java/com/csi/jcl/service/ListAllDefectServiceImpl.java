@@ -5,6 +5,7 @@ import com.csi.jcl.dao.DefectListRepository;
 import com.csi.jcl.model.DefectListAndAdJclModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,43 +27,84 @@ public class ListAllDefectServiceImpl implements ListAllDefectService {
 
     private final DefectListRepository defectListRepository;
 
+
     public ListAllDefectServiceImpl(DefectListRepository defectListRepository) {
         this.defectListRepository = defectListRepository;
     }
 
     @Override
-    public List<DefectListAndAdJclModel> listAllDefect(String sprint, String ad, String jcl, List<String> issueStatusList) {
+    public List<DefectListAndAdJclModel> listAllDefect(String ad, String jcl, List<String> issueStatusList, String testType,String programType, String systemOperation) {
 
-
+        System.out.println("systemOperation :"+systemOperation);
         //如果SPRINT跟DEFECT狀態都選擇ALL
-        if (issueStatusList.contains("ALL") & "All".equals(sprint)  ) {
-            sprint = "";
-            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect123(sprint,ad,jcl);
+        if (issueStatusList.contains("ALL") && testType.contains("ALL")&& systemOperation.contains("ALL")  ) {
+            testType = "";
+            systemOperation="";
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect123(ad,jcl,testType,programType,systemOperation);
             List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
 
-            logger.info("SPRINT and DEFECT selected All");
+            logger.info("testType and DEFECT selected All and systemOperation");
             return DefectListAndAdJclModel;
         //只有SPRINT選擇ALL
-        }else if ("All".equals(sprint)) {
-            sprint = "";
-
-            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect(sprint, ad, jcl, issueStatusList);
+        }else if (testType.contains("ALL")&& systemOperation.contains("ALL")) {
+            testType = "";
+            systemOperation = "";
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect( ad, jcl, issueStatusList,testType,programType,systemOperation);
 
             List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
 
-            logger.info("SPRINT selected All");
+            logger.info("testType and systemOperation selected All");
             return DefectListAndAdJclModel;
         //DEFECT選擇ALL
-        } else if(issueStatusList.contains("ALL")){
+        } else if(testType.contains("ALL")&&issueStatusList.contains("ALL")){
 
-            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect123(sprint, ad, jcl);
+            testType="";
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect123( ad, jcl,testType,programType,systemOperation);
+
+            List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
+
+            logger.info(" testType and  issueStatusList selected All");
+            return DefectListAndAdJclModel;
+
+        }else if(testType.contains("ALL")){
+            testType = "";
+
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect( ad, jcl, issueStatusList,testType,programType,systemOperation);
+
+            List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
+
+            logger.info("testType selected All");
+            return DefectListAndAdJclModel;
+
+        }else if(systemOperation.contains("ALL")){
+            systemOperation = "";
+
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect( ad, jcl, issueStatusList,testType,programType,systemOperation);
+
+            List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
+
+            logger.info("systemOperation selected All");
+            return DefectListAndAdJclModel;
+
+        }else if(issueStatusList.contains("ALL")&& systemOperation.contains("ALL")){
+            systemOperation="";
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect123( ad, jcl,testType,programType,systemOperation);
+
+            List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
+
+            logger.info(" DEFECT selected All");
+            return DefectListAndAdJclModel;
+
+        }else if(issueStatusList.contains("ALL")){
+
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect123( ad, jcl,testType,programType,systemOperation);
 
             List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
 
             logger.info(" DEFECT selected All");
             return DefectListAndAdJclModel;
         }else{
-            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect(sprint, ad, jcl, issueStatusList);
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect( ad, jcl, issueStatusList,testType,programType,systemOperation);
 
             List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
 
@@ -71,4 +113,6 @@ public class ListAllDefectServiceImpl implements ListAllDefectService {
         }
 
     }
+
+
 }
