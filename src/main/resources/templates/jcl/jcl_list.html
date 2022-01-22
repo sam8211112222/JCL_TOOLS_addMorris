@@ -14,8 +14,6 @@
                                                              style="color: azure">查詢可執行之AD</a></th>
         <th scope="col" style="background-color:#6699cc;"><a th:href="@{/su}" style="color: azure">測試個案查詢</a>
         </th>
-        <th scope="col" style="background-color:#6699cc;"><a th:href="@{/jcl_sequence/jcl_sequence_home}"
-                                                             style="color: azure">執行順序查詢</a></th>
         <th scope="col" style="background-color:#6699cc;"><a th:href="@{/defect}">
             <font color=#FFFFFF>DEFECT維護及查詢</font>
         </a></th>
@@ -28,19 +26,19 @@
 <p><span style="font-size:16px"><strong>查詢條件</strong></span></p>
 
 <form th:action="@{/jcl/search}">Sprint：
-<!--    <input checked="checked" name="sprint" type="radio" value="All"/>All-->
-<!--    <input name="sprint" type="radio" value="sprint1"/>Sprint1-->
-<!--    <input name="sprint" type="radio" value="sprint2"/>Sprint2-->
-<!--    <input name="sprint" type="radio" value="sprint3"/>Sprint3-->
-<!--    <br/>-->
-<!--    <label for="codeTypeId">子系統:&nbsp;</label><select class="form-control" name="codeTypeId" id="codeTypeId">-->
-<!--        <option selected="selected" value="">選擇</option>-->
-<!--        <option th:each="systemType:${codeTypeIdEqualsSystemType}"-->
-<!--                th:value="${systemType.getCodeId()}"-->
-<!--                th:text="${systemType.getCodeId()}"></option>-->
-<!--        &lt;!&ndash;        th:selected="${systemType.getCodeId()} eq ${systemType}"></option>&ndash;&gt;-->
-<!--    </select>-->
-<!--    <br/>-->
+    <!--    <input checked="checked" name="sprint" type="radio" value="All"/>All-->
+    <!--    <input name="sprint" type="radio" value="sprint1"/>Sprint1-->
+    <!--    <input name="sprint" type="radio" value="sprint2"/>Sprint2-->
+    <!--    <input name="sprint" type="radio" value="sprint3"/>Sprint3-->
+    <!--    <br/>-->
+    <!--    <label for="codeTypeId">子系統:&nbsp;</label><select class="form-control" name="codeTypeId" id="codeTypeId">-->
+    <!--        <option selected="selected" value="">選擇</option>-->
+    <!--        <option th:each="systemType:${codeTypeIdEqualsSystemType}"-->
+    <!--                th:value="${systemType.getCodeId()}"-->
+    <!--                th:text="${systemType.getCodeId()}"></option>-->
+    <!--        &lt;!&ndash;        th:selected="${systemType.getCodeId()} eq ${systemType}"></option>&ndash;&gt;-->
+    <!--    </select>-->
+    <!--    <br/>-->
     <label for="testType">測試階段分類:&nbsp;</label>
     <select class="form-control" name="testType" id="testType">
         <option selected="selected" value="All">選擇</option>
@@ -84,7 +82,8 @@
                 <span th:if="${allJclList.totalElements} != 0" th:text="目前在+${page+1}+頁"></span>
                 <br>
                 頁數: <span th:each="pages : ${pageList}">
-                        <a th:href="@{search(testType=${testType},systemOp=${systemOp},adName=${adName},page=${pages})}" th:text="${pages+1}"
+                        <a th:href="@{search(testType=${testType},systemOp=${systemOp},adName=${adName},page=${pages})}"
+                           th:text="${pages+1}"
                            th:id="page+${pages+1}"></a>
                     </span>
             </strong>
