@@ -171,14 +171,12 @@
     $("#submit1").click(function () {
         var check = $("input[name='issueStatus']:checked").length;//判斷有多少個方框被勾選
         if (check == 0) {
-
+            swal("沒有勾選Defect狀態", "請至少勾選一項DEFECT狀態", "warning");
             return false;//不要提交表單
         }
     })
 
-
     $(document).ready(function () {
-        //選擇全選其他選項取消勾選
         $("#ALL").click(function () {
             if ($("#ALL").prop("checked")) {//如果全選按鈕有被選擇的話（被選擇是true）
                 $(".MULTI").each(function () {
@@ -188,11 +186,11 @@
 
             }
         })
-        //其他選項被勾選 全選取消勾選
+
         $(".MULTI").click(function () {
             if ($("#ALL").prop("checked")) {//如果全選按鈕有被選擇的話（被選擇是true）
 
-                $("#ALL").prop("checked", false);//把全選的核方框的property都取消勾選
+                $("#ALL").prop("checked", false);//把所有的核方框的property都取消勾選
 
             } else {
 
