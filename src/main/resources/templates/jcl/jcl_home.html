@@ -36,15 +36,15 @@
     <select class="form-control" name="testType" id="testType">
         <option selected="selected" value="All">選擇</option>
         <option th:each="testType:${codeTypeIdEqualsSystemType}"
-                th:value="${testType.getCodeTypeId()}"
-                th:text="${testType.getCodeId()}"></option>
+                th:value="${testType.getCodeId()}"
+                th:text="${testType.getCodeDesc()}"></option>
     </select>
     <br/>
     <label for="systemOp">系統作業類別 :&nbsp;</label>
     <select class="form-control" name="systemOp" id="systemOp">
         <option selected="selected" value="All">選擇</option>
         <option th:each="systemOp:${codeTypeIdSystemOperation}"
-                th:value="${systemOp.getCodeTypeId()}"
+                th:value="${systemOp.getCodeDesc()}"
                 th:text="${systemOp.getCodeDesc()}"></option>
     </select>
     <br/>

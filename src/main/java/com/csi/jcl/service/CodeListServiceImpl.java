@@ -44,6 +44,7 @@ public class CodeListServiceImpl implements CodeListService {
         return codeListRepository.findByCodeTypeIdSystemOperation();
     }
 
+
     @Override
     public List<CodeListEntity>  selectTestType() {
         List<CodeListEntity> selectTestType= codeListRepository.findSeletTestType();
@@ -52,7 +53,7 @@ public class CodeListServiceImpl implements CodeListService {
 
     @Override
     public List<CodeListEntity> findSystemOperation() {
-         List<CodeListEntity> selectSystemOperation= codeListRepository.findSystemOperation();;
+         List<CodeListEntity> selectSystemOperation= codeListRepository.findByCodeTypeIdSystemOperation();;
         return selectSystemOperation;
     }
 

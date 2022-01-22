@@ -49,7 +49,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfoEntity userInfoEntity = null;
         if (result.isPresent()) {
             userInfoEntity = result.get();
-            logger.info(userInfoEntity);
+            logger.debug(userInfoEntity);
         } else {
             logger.error("Did not find userid" + userId);
             throw new RuntimeException("Did not find userid" + userId);
@@ -70,7 +70,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
         // 更新userInfoEntity
         userInfoEntity.setLastlogindatetime(timeStamp);
-        logger.info(userInfoEntity);
+        logger.debug(userInfoEntity);
         userInfoRepository.save(userInfoEntity);
     }
 }

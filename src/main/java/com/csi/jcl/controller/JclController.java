@@ -101,7 +101,7 @@ public class JclController {
             httpSession.setAttribute("login","login");
         }
         // 2022.01.19 新增SYSTEMTYPE條件 by Sam Chen
-        List<CodeListEntity> codeTypeIdEqualsSystemType = codeListService.findByCodeTypeIdEqualsSystemType();
+        List<CodeListEntity> codeTypeIdEqualsSystemType = codeListService.selectTestType();
         List<CodeListEntity> codeTypeIdSystemOperation = codeListService.findByCodeTypeIdSystemOperation();
         model.addAttribute("codeTypeIdEqualsSystemType",codeTypeIdEqualsSystemType);
         model.addAttribute("codeTypeIdSystemOperation",codeTypeIdSystemOperation);
@@ -149,7 +149,7 @@ public class JclController {
         }
 
         // 2022.01.19 新增SYSTEMTYPE條件 by Sam Chen
-        List<CodeListEntity> codeTypeIdEqualsSystemType = codeListService.findByCodeTypeIdEqualsSystemType();
+        List<CodeListEntity> codeTypeIdEqualsSystemType = codeListService.selectTestType();
         List<CodeListEntity> codeTypeIdSystemOperation = codeListService.findByCodeTypeIdSystemOperation();
 
         // 加入model
