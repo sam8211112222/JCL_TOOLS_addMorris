@@ -69,19 +69,19 @@ public class JclServiceImpl implements JclService {
      *
      * @param testType testType參數的值
      * @param systemOp systemOp參數的值
-     * @param adName adName參數的值
+     * @param adName   adName參數的值
      * @return listJclModel
      * @author si1206 Sam Chen
      * @date 2021/08/04
      */
     @Override
-    public List<AdJclModel> listAllJclByCondition(String testType,String systemOp,String adName) {
+    public List<AdJclModel> listAllJclByCondition(String testType, String systemOp, String adName) {
         logger.info("Call listAllJclByCondition()");
 
         //如果testType=All, 將testType的值轉換成空字串
         if ("All".equals(testType)) {
             testType = "";
-            if ("All".equals(systemOp)){
+            if ("All".equals(systemOp)) {
                 systemOp = "";
                 logger.info("testType = " + testType + " systemOp = " + systemOp + "adName = " + adName);
                 List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(testType, systemOp, adName);
@@ -89,7 +89,7 @@ public class JclServiceImpl implements JclService {
                 List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
                 logger.debug(listJclModel);
                 return listJclModel;
-            }else {
+            } else {
                 logger.info("testType = " + testType + " systemOp = " + systemOp + "adName = " + adName);
                 List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(testType, systemOp, adName);
                 logger.info("Get listJcl from DB");
@@ -98,7 +98,7 @@ public class JclServiceImpl implements JclService {
                 return listJclModel;
             }
         } else {
-            if ("All".equals(systemOp)){
+            if ("All".equals(systemOp)) {
                 systemOp = "";
                 logger.info("testType = " + testType + " systemOp = " + systemOp + "adName = " + adName);
                 List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(testType, systemOp, adName);
@@ -106,7 +106,7 @@ public class JclServiceImpl implements JclService {
                 List<AdJclModel> listJclModel = JSONObject.parseArray(JSONObject.toJSONString(listJcl), AdJclModel.class);
                 logger.debug(listJclModel);
                 return listJclModel;
-            }else {
+            } else {
                 logger.info("testType = " + testType + " systemOp = " + systemOp + "adName = " + adName);
                 List<Map<String, Object>> listJcl = adJclRepository.listAllJclByCondition(testType, systemOp, adName);
                 logger.info("Get listJcl from DB");
@@ -127,6 +127,7 @@ public class JclServiceImpl implements JclService {
 
     /**
      * 依條件產生Excel檔
+     *
      * @param listAllJclByCondition
      * @return
      */
@@ -151,11 +152,11 @@ public class JclServiceImpl implements JclService {
 
         // 用Map存放第一列的欄位名稱
         Map<String, Integer> headerMap = new HashMap<String, Integer>();
-        headerMap.put("systemType",0);
-        headerMap.put("ad",1);
-        headerMap.put("adDescription",2);
-        headerMap.put("chtOwner",3);
-        headerMap.put("jclAmount",4);
+        headerMap.put("systemType", 0);
+        headerMap.put("ad", 1);
+        headerMap.put("adDescription", 2);
+        headerMap.put("chtOwner", 3);
+        headerMap.put("jclAmount", 4);
 
         firstRow.createCell(0).setCellValue("系統作業類別");
         firstRow.createCell(1).setCellValue("AD");
@@ -164,10 +165,9 @@ public class JclServiceImpl implements JclService {
         firstRow.createCell(4).setCellValue("JCL數量");
 
 
-
-        for (int i = 0; i < listAllJclByCondition.size(); i++){
-            XSSFRow xssfRow = sheet.createRow(rowIndex+i);
-            currentRow = sheet.getRow(rowIndex+i);
+        for (int i = 0; i < listAllJclByCondition.size(); i++) {
+            XSSFRow xssfRow = sheet.createRow(rowIndex + i);
+            currentRow = sheet.getRow(rowIndex + i);
             currentRow.createCell(headerMap.get("systemType")).setCellValue(listAllJclByCondition.get(i).getSystem_operation());
             currentRow.createCell(headerMap.get("ad")).setCellValue(listAllJclByCondition.get(i).getAd());
             currentRow.createCell(headerMap.get("adDescription")).setCellValue(listAllJclByCondition.get(i).getAddesc());
@@ -183,6 +183,20 @@ public class JclServiceImpl implements JclService {
         }
         return new ByteArrayInputStream(outputStream.toByteArray());
 
+    }
+
+    /**
+     * 回傳成有索引值的List內容
+     * @param adJclModelList
+     * @return adJclModelList
+     *
+     */
+    @Override
+    public List<AdJclModel> sortData(List<AdJclModel> adJclModelList) {
+        for (int i = 0; i < adJclModelList.size(); i++) {
+            adJclModelList.get(i).setIndex(i+1);
+        }
+        return adJclModelList;
     }
 
 }

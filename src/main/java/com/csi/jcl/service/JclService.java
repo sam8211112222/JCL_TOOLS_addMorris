@@ -23,4 +23,6 @@ public interface JclService {
     public List<UserInfoEntity> findAll();
 
     public ByteArrayInputStream generateExcel(List<AdJclModel> listAllJclByCondition);
+
+    public List<AdJclModel> sortData(List<AdJclModel> adJclModelList);
 }

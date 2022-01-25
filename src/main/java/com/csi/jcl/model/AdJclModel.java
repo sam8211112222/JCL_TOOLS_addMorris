@@ -11,6 +11,8 @@ package com.csi.jcl.model;
 
 public class AdJclModel {
 
+    private Integer index;
+
     private String sprint;
 
     private String ad;
@@ -27,16 +29,14 @@ public class AdJclModel {
 
     private String jid;
 
-    private String cht_ap;
-
-    private String cht_dc;
 
     private String system_operation;
 
     public AdJclModel() {
     }
 
-    public AdJclModel(String sprint, String ad, String addesc, String systemtype, String systemdesc, String cht, Integer jclcout, String jid, String cht_ap, String cht_dc, String system_operation) {
+    public AdJclModel(Integer index, String sprint, String ad, String addesc, String systemtype, String systemdesc, String cht, Integer jclcout, String jid, String system_operation) {
+        this.index = index;
         this.sprint = sprint;
         this.ad = ad;
         this.addesc = addesc;
@@ -45,9 +45,15 @@ public class AdJclModel {
         this.cht = cht;
         this.jclcout = jclcout;
         this.jid = jid;
-        this.cht_ap = cht_ap;
-        this.cht_dc = cht_dc;
         this.system_operation = system_operation;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     public String getSprint() {
@@ -114,21 +120,6 @@ public class AdJclModel {
         this.jid = jid;
     }
 
-    public String getCht_ap() {
-        return cht_ap;
-    }
-
-    public void setCht_ap(String cht_ap) {
-        this.cht_ap = cht_ap;
-    }
-
-    public String getCht_dc() {
-        return cht_dc;
-    }
-
-    public void setCht_dc(String cht_dc) {
-        this.cht_dc = cht_dc;
-    }
 
     public String getSystem_operation() {
         return system_operation;
@@ -141,7 +132,8 @@ public class AdJclModel {
     @Override
     public String toString() {
         return "AdJclModel{" +
-                "sprint='" + sprint + '\'' +
+                "index=" + index +
+                ", sprint='" + sprint + '\'' +
                 ", ad='" + ad + '\'' +
                 ", addesc='" + addesc + '\'' +
                 ", systemtype='" + systemtype + '\'' +
@@ -149,8 +141,6 @@ public class AdJclModel {
                 ", cht='" + cht + '\'' +
                 ", jclcout=" + jclcout +
                 ", jid='" + jid + '\'' +
-                ", cht_ap='" + cht_ap + '\'' +
-                ", cht_dc='" + cht_dc + '\'' +
                 ", system_operation='" + system_operation + '\'' +
                 '}';
     }
