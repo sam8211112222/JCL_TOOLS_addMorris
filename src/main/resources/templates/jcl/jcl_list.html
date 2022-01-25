@@ -80,7 +80,7 @@
                 <br>
                 <span th:if="${allJclList.totalElements} == 0" th:text="查無符合條件資料" style="color: red">
                     </span>
-                <span th:if="${allJclList.totalElements} != 0" th:text="目前在+${page+1}+頁"></span>
+                <span th:if="${allJclList.totalElements} != 0" th:text="目前在第+${page+1}+頁"></span>
                 <br>
                 頁數: <span th:each="pages : ${pageList}">
                         <a th:href="@{search(testType=${testType},systemOp=${systemOp},adName=${adName},page=${pages})}"
@@ -115,7 +115,7 @@
         </tbody>
         <caption style="caption-side: bottom">
             <strong>
-                <span th:if="${allJclList.totalElements} != 0" th:text="目前在+${page+1}+頁"></span>
+                <span th:if="${allJclList.totalElements} != 0" th:text="目前在第+${page+1}+頁"></span>
                 <br>
                 頁數: <span th:each="pages : ${pageList}">
                         <a th:href="@{search(testType=${testType},systemOp=${systemOp},adName=${adName},page=${pages})}"
