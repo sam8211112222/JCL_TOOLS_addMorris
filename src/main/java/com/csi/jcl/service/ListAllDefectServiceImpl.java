@@ -76,16 +76,6 @@ public class ListAllDefectServiceImpl implements ListAllDefectService {
             logger.info("testType selected All");
             return DefectListAndAdJclModel;
 
-        }else if(systemOperation.contains("ALL")){
-            systemOperation = "";
-
-            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect( ad, jcl, issueStatusList,testType,programType,systemOperation);
-
-            List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
-
-            logger.info("systemOperation selected All");
-            return DefectListAndAdJclModel;
-
         }else if(issueStatusList.contains("ALL")&& systemOperation.contains("ALL")){
             systemOperation="";
             List<Map<String, Object>> listDefect = defectListRepository.listAllDefect123( ad, jcl,testType,programType,systemOperation);
@@ -93,6 +83,16 @@ public class ListAllDefectServiceImpl implements ListAllDefectService {
             List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
 
             logger.info(" DEFECT selected All");
+            return DefectListAndAdJclModel;
+
+        } else if(systemOperation.contains("ALL")){
+            systemOperation = "";
+            System.out.println("testType :"+testType);
+            List<Map<String, Object>> listDefect = defectListRepository.listAllDefect( ad, jcl, issueStatusList,testType,programType,systemOperation);
+
+            List<DefectListAndAdJclModel> DefectListAndAdJclModel = JSONObject.parseArray(JSONObject.toJSONString(listDefect), DefectListAndAdJclModel.class);
+
+            logger.info("systemOperation selected All");
             return DefectListAndAdJclModel;
 
         }else if(issueStatusList.contains("ALL")){

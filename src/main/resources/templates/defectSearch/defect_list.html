@@ -53,7 +53,7 @@
     <!--		</tr>-->
 
     <form th:action="@{/defectSearch}">
-        測試階段分類:<select name="testType" id="testType">
+        測試階段分類:<select name="testType" id="testType" th:selected="${selectTestType}">
         <option value="ALL">ALL</option>
         <option th:each="selectTestType : ${selectTestType}" th:value="${selectTestType.codeId}"
                 th:text="${selectTestType.codeDesc}"
@@ -229,7 +229,9 @@
                     <tbody>
                     <tr th:each="allDefectList : ${allDefectList}">
                         <td th:text="${allDefectListStat.index+1}"></td>
-                        <td th:if="${allDefectList.testType}==1">單元系統測試</td>
+                        <td th:if="${allDefectList.testType}==1" >單元系統測試</td>
+                        <td th:if="${allDefectList.testType}==2" >系統整合測試</td>
+                        <td th:if="${allDefectList.testType}==3" >雙軌測試</td>
                         <td th:text="${allDefectList.ad}"></td>
                         <td th:text="${allDefectList.jcl}"></td>
                         <td th:text="${allDefectList.issueKey}"></td>
