@@ -25,7 +25,8 @@
 
 <p><span style="font-size:16px"><strong>查詢條件</strong></span></p>
 
-<form th:action="@{/jcl/search}">Sprint：
+<form th:action="@{/jcl/search}">
+    <br>
     <!--    <input checked="checked" name="sprint" type="radio" value="All"/>All-->
     <!--    <input name="sprint" type="radio" value="sprint1"/>Sprint1-->
     <!--    <input name="sprint" type="radio" value="sprint2"/>Sprint2-->
@@ -130,10 +131,10 @@
     function generateaHref() {
         const getUrlString = location.href;
         const url = new URL(getUrlString);
-        const sprint = url.searchParams.get("sprint");
-        const codeTypeId = url.searchParams.get("codeTypeId");
+        const testType = url.searchParams.get("testType");
+        const systemOp = url.searchParams.get("systemOp");
         const adName = url.searchParams.get("adName");
-        let api = `/jcl/generateExcel?sprint=${sprint}&codeTypeId=${codeTypeId}&adName=${adName}`
+        let api = `/jcl/generateExcel?testType=${testType}&systemOp=${systemOp}&adName=${adName}`
         let a = document.getElementById("exeid")
         a.setAttribute("href", api);
     }

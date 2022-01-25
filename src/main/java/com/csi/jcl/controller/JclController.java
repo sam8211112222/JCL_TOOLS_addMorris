@@ -198,17 +198,18 @@ public class JclController {
      *
      * @author si1206 Sam Chen
      * @date 2021/11/29
-     * @param sprint sprint參數的值
+     * @param testType testType參數的值
+     * @param systemOp systemOp參數的值
      * @param adName adName參數的值
      */
     @GetMapping("/generateExcel")
-    public void exportExcel(@RequestParam("sprint") String sprint,
-                            @RequestParam("adName") String adName,
-                            @RequestParam("codeTypeId")String codeTypeId,
+    public void exportExcel(@RequestParam("testType") String testType,
+                            @RequestParam("systemOp") String systemOp,
+                            @RequestParam("adName")String adName,
                             HttpServletResponse response) throws IOException {
 
         // 從jclService的listAllJclByCondition取得資料
-        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(adName, sprint,codeTypeId);
+        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(testType,systemOp,adName);
 //        String fileName = "sprint="+sprint+"adName="+adName+"codeTypeId="+codeTypeId;
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=jcl.xlsx");
