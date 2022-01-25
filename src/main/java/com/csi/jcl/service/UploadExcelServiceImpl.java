@@ -57,11 +57,17 @@ public class UploadExcelServiceImpl implements UploadExcelService{
             //把檔案轉成byte陣列
             logger.info("file.getBytes()");
             byte[] bytes = file.getBytes();
+
+            XSSFWorkbook workbook = new XSSFWorkbook();
             //byte陣列轉成ByteArrayInputStream
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
-            XSSFWorkbook workbook = new XSSFWorkbook(byteArrayInputStream);
+            if(file.getOriginalFilename().contains(".csv")){
+                 workbook =  getCsv.getWorkbookByCsv(byteArrayInputStream);
+            }else {
 
+                 workbook = new XSSFWorkbook(byteArrayInputStream);
+            }
             //得到上傳的表
             XSSFSheet sheet = workbook.getSheetAt(0);
 
