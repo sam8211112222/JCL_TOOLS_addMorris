@@ -151,34 +151,28 @@ public class JclServiceImpl implements JclService {
 
         // 用Map存放第一列的欄位名稱
         Map<String, Integer> headerMap = new HashMap<String, Integer>();
-        headerMap.put("SPRINT",0);
-        headerMap.put("AD",1);
-        headerMap.put("AD Description",2);
-        headerMap.put("CHT AP",3);
-        headerMap.put("CHT DC",4);
-        headerMap.put("子系統",5);
-        headerMap.put("JCL數量",6);
+        headerMap.put("systemType",0);
+        headerMap.put("ad",1);
+        headerMap.put("adDescription",2);
+        headerMap.put("chtOwner",3);
+        headerMap.put("jclAmount",4);
 
-        firstRow.createCell(0).setCellValue("SPRINT");
+        firstRow.createCell(0).setCellValue("系統作業類別");
         firstRow.createCell(1).setCellValue("AD");
         firstRow.createCell(2).setCellValue("AD Description");
-        firstRow.createCell(3).setCellValue("CHT AP");
-        firstRow.createCell(4).setCellValue("CHT DC");
-        firstRow.createCell(5).setCellValue("子系統");
-        firstRow.createCell(6).setCellValue("JCL數量");
+        firstRow.createCell(3).setCellValue("CHT OWNER");
+        firstRow.createCell(4).setCellValue("JCL數量");
 
 
 
         for (int i = 0; i < listAllJclByCondition.size(); i++){
             XSSFRow xssfRow = sheet.createRow(rowIndex+i);
             currentRow = sheet.getRow(rowIndex+i);
-            currentRow.createCell(headerMap.get("SPRINT")).setCellValue(listAllJclByCondition.get(i).getSprint());
-            currentRow.createCell(headerMap.get("AD")).setCellValue(listAllJclByCondition.get(i).getAd());
-            currentRow.createCell(headerMap.get("AD Description")).setCellValue(listAllJclByCondition.get(i).getAddesc());
-            currentRow.createCell(headerMap.get("CHT AP")).setCellValue(listAllJclByCondition.get(i).getCht_ap());
-            currentRow.createCell(headerMap.get("CHT DC")).setCellValue(listAllJclByCondition.get(i).getCht_dc());
-            currentRow.createCell(headerMap.get("子系統")).setCellValue(listAllJclByCondition.get(i).getSystemtype());
-            currentRow.createCell(headerMap.get("JCL數量")).setCellValue(listAllJclByCondition.get(i).getJclcout());
+            currentRow.createCell(headerMap.get("systemType")).setCellValue(listAllJclByCondition.get(i).getSystem_operation());
+            currentRow.createCell(headerMap.get("ad")).setCellValue(listAllJclByCondition.get(i).getAd());
+            currentRow.createCell(headerMap.get("adDescription")).setCellValue(listAllJclByCondition.get(i).getAddesc());
+            currentRow.createCell(headerMap.get("chtOwner")).setCellValue(listAllJclByCondition.get(i).getCht());
+            currentRow.createCell(headerMap.get("jclAmount")).setCellValue(listAllJclByCondition.get(i).getJclcout());
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
