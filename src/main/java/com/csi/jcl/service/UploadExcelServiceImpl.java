@@ -47,6 +47,9 @@ public class UploadExcelServiceImpl implements UploadExcelService{
     @Override
     public String getExcel(MultipartFile file) {
 
+        String AD = null;
+        String JCL = null;
+
         int rowInfo = 0;
         try {
             // TODO Auto-generated method stub
@@ -87,7 +90,8 @@ public class UploadExcelServiceImpl implements UploadExcelService{
                 Cell cellJCL = row1.getCell(6);
 
                 Cell cellIssueType = row1.getCell(7);
-
+                AD = cellAD.getStringCellValue();
+                JCL = cellJCL.getStringCellValue();
 
                 CodeListEntity codeListEntity = new CodeListEntity();
 
@@ -126,13 +130,13 @@ public class UploadExcelServiceImpl implements UploadExcelService{
             String uploadStatus = "上傳成功";
             return uploadStatus;
         } catch (NullPointerException n) {
-            String uploadStatus = "內容錯誤！ 請確認第" + (rowInfo+1) + "行";
+            String uploadStatus = "內容錯誤！ 查無此筆資料 AD :"+AD+"\nJCL :"+JCL;
             return uploadStatus;
         } catch (EmptyFileException p) {
             String uploadStatus = "請選擇要上傳的檔案";
             return uploadStatus;
         } catch (Exception e) {
-            String uploadStatus = "檔案格式或內容錯誤！";
+            String uploadStatus = "檔案格式錯誤！";
             return uploadStatus;
         }
     }
