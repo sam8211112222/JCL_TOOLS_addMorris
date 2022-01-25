@@ -64,7 +64,7 @@ public interface AdJclRepository extends PagingAndSortingRepository<AdJclEntity,
             "WHERE A1.AD NOT IN (Select AD FROM ad_jcl_exeorder WHERE BEFOREAD IS NOT NULL) " +
             "AND (:testType is null OR T.TEST_TYPE = :testType) " +
             "AND (:systemOp is null OR A1.SYSTEM_OPERATION = :systemOp) " +
-            "and ( :adName is null OR A1.AD = :adName) " +
+            "AND ( :adName is null OR A1.AD Like %:adName% ) " +
             "Order by  A1.SYSTEM_OPERATION,A1.AD ")
     public List<Map<String, Object>> listAllJclByCondition(@Param("testType") String testType,
                                                            @Param("systemOp") String systemOp,
