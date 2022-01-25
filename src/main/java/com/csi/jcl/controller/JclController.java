@@ -65,13 +65,13 @@ public class JclController {
      * JCL首頁
      * 從session取得userid來更新最後登入時間
      *
-     * @author si1206 Sam Chen
      * @param httpSession HttpSession
-     * @date 2021/08/04
      * @return jcl_home.html
+     * @author si1206 Sam Chen
+     * @date 2021/08/04
      */
     @GetMapping("/jcl_home")
-    public String hello(HttpSession httpSession,Model model) {
+    public String hello(HttpSession httpSession, Model model) {
 
         // 取得Session內的key, value
 //        Enumeration<String> names = httpSession.getAttributeNames();
@@ -93,18 +93,18 @@ public class JclController {
         User user = (User) principal;
         String userid = user.getUsername();
 
-        if (httpSession.getAttribute("login") == null){
+        if (httpSession.getAttribute("login") == null) {
             // 依userid尋找對應的userInfoEntity
-            UserInfoEntity userInfoEntity =  userInfoService.findById(userid);
+            UserInfoEntity userInfoEntity = userInfoService.findById(userid);
             // 更新userInfoEntity的狀態
             userInfoService.updateInfo(userInfoEntity);
-            httpSession.setAttribute("login","login");
+            httpSession.setAttribute("login", "login");
         }
         // 2022.01.19 新增SYSTEMTYPE條件 by Sam Chen
         List<CodeListEntity> codeTypeIdEqualsSystemType = codeListService.selectTestType();
         List<CodeListEntity> codeTypeIdSystemOperation = codeListService.findByCodeTypeIdSystemOperation();
-        model.addAttribute("codeTypeIdEqualsSystemType",codeTypeIdEqualsSystemType);
-        model.addAttribute("codeTypeIdSystemOperation",codeTypeIdSystemOperation);
+        model.addAttribute("codeTypeIdEqualsSystemType", codeTypeIdEqualsSystemType);
+        model.addAttribute("codeTypeIdSystemOperation", codeTypeIdSystemOperation);
 
         return "jcl/jcl_home";
     }
@@ -112,26 +112,30 @@ public class JclController {
     /**
      * 依條件查詢JCL列表
      *
-     * @author si1206 Sam Chen
-     * @date 2021/08/04
-     * @param model 傳入Thymeleaf的資料
+     * @param model    傳入Thymeleaf的資料
      * @param testType testType參數的值
      * @param systemOp systemOp參數的值
-     * @param adName adName參數的值
+     * @param adName   adName參數的值
      * @param pageable 單頁內容總數
-     * @param page 頁面總數
+     * @param page     頁面總數
      * @return jcl_list.html
+     * @author si1206 Sam Chen
+     * @date 2021/08/04
      */
     @GetMapping("/search")
     public String searchAdJcl(Model model,
                               @RequestParam("testType") String testType,
                               @RequestParam("systemOp") String systemOp,
-                              @RequestParam("adName")String adName,
+                              @RequestParam("adName") String adName,
                               Pageable pageable,
                               @RequestParam("page") Integer page) {
 
+
         // 從jclService的listAllJclByCondition取得資料
-        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(testType, systemOp,adName);
+        List<AdJclModel> adJclModelList;
+        adJclModelList = jclService.listAllJclByCondition(testType, systemOp, adName);
+        adJclModelList = jclService.sortData(adJclModelList);
+
         logger.info("Get adJclModelList");
 
         // 計算資料的起始與結束位置
@@ -153,8 +157,8 @@ public class JclController {
         List<CodeListEntity> codeTypeIdSystemOperation = codeListService.findByCodeTypeIdSystemOperation();
 
         // 加入model
-        model.addAttribute("codeTypeIdEqualsSystemType",codeTypeIdEqualsSystemType);
-        model.addAttribute("codeTypeIdSystemOperation",codeTypeIdSystemOperation);
+        model.addAttribute("codeTypeIdEqualsSystemType", codeTypeIdEqualsSystemType);
+        model.addAttribute("codeTypeIdSystemOperation", codeTypeIdSystemOperation);
         model.addAttribute("allJclList", allJclList);
         model.addAttribute("testType", testType);
         model.addAttribute("systemOp", systemOp);
@@ -169,11 +173,11 @@ public class JclController {
     /**
      * 依adName查詢相關的JCL
      *
-     * @author si1206 Sam Chen
-     * @date 2021/08/04
-     * @param model 傳入Thymeleaf的資料
+     * @param model  傳入Thymeleaf的資料
      * @param adName adName參數的值
      * @return jcl_detail.html
+     * @author si1206 Sam Chen
+     * @date 2021/08/04
      */
     @GetMapping("/searchJclDetail/{ad}")
     public String showJclDetail(Model model, @PathVariable("ad") String adName) {
@@ -196,20 +200,20 @@ public class JclController {
     /**
      * 依條件查詢JCL列表並產出excel表格
      *
-     * @author si1206 Sam Chen
-     * @date 2021/11/29
      * @param testType testType參數的值
      * @param systemOp systemOp參數的值
-     * @param adName adName參數的值
+     * @param adName   adName參數的值
+     * @author si1206 Sam Chen
+     * @date 2021/11/29
      */
     @GetMapping("/generateExcel")
     public void exportExcel(@RequestParam("testType") String testType,
                             @RequestParam("systemOp") String systemOp,
-                            @RequestParam("adName")String adName,
+                            @RequestParam("adName") String adName,
                             HttpServletResponse response) throws IOException {
 
         // 從jclService的listAllJclByCondition取得資料
-        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(testType,systemOp,adName);
+        List<AdJclModel> adJclModelList = jclService.listAllJclByCondition(testType, systemOp, adName);
 //        String fileName = "sprint="+sprint+"adName="+adName+"codeTypeId="+codeTypeId;
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=jcl.xlsx");

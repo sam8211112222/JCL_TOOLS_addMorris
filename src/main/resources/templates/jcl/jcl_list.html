@@ -91,6 +91,7 @@
         </caption>
         <thead>
         <tr>
+            <th scope="col" style="background-color: rgb(204, 255, 153);">Index</th>
             <th scope="col" style="background-color: rgb(204, 255, 153);">系統作業類別</th>
             <th scope="col" style="background-color: rgb(204, 255, 153);">AD</th>
             <th scope="col" style="background-color: rgb(204, 255, 153);">AD Description</th>
@@ -100,6 +101,7 @@
         </thead>
         <tbody>
         <tr th:each="allJclLists : ${allJclList}">
+            <td th:text="${allJclLists.index}"></td>
             <td th:text="${allJclLists.system_operation}"></td>
             <td th:text="${allJclLists.ad}"></td>
             <td th:text="${allJclLists.addesc}"></td>
@@ -111,6 +113,17 @@
             </td>
         </tr>
         </tbody>
+        <caption style="caption-side: bottom">
+            <strong>
+                <span th:if="${allJclList.totalElements} != 0" th:text="目前在+${page+1}+頁"></span>
+                <br>
+                頁數: <span th:each="pages : ${pageList}">
+                        <a th:href="@{search(testType=${testType},systemOp=${systemOp},adName=${adName},page=${pages})}"
+                           th:text="${pages+1}"
+                           th:id="page+${pages+1}"></a>
+                    </span>
+            </strong>
+        </caption>
     </table>
 </form>
 <script th:inline="javascript">
