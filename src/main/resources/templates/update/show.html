@@ -34,7 +34,8 @@
 		測試階段分類 :
 		<select class="form-control" name="test_type" id="test_type">
 			<option value="ALL">ALL</option>
-			<option th:each="test_type:${test_type}" th:value="${test_type.CODE_ID}" th:text="${test_type.CODE_DESC}"></option>
+			<option th:each="test_type:${test_type}" th:value="${test_type.CODE_ID}" th:text="${test_type.CODE_DESC}">
+			</option>
 		</select><br>
 		程式作業類別 :
 		<select class="form-control" name="program_type" id="program_type">
@@ -44,7 +45,8 @@
 		批次系統作業類別 :
 		<select class="form-control" name="system_operation" id="system_operation">
 			<option value="ALL">ALL</option>
-			<option th:each="system_operation:${system_operation}" th:value="${system_operation.CODE_DESC}" th:text="${system_operation.CODE_DESC}"></option>
+			<option th:each="system_operation:${system_operation}" th:value="${system_operation.CODE_DESC}"
+				th:text="${system_operation.CODE_DESC}"></option>
 		</select><br>
 		線上交易作業類別 :
 		<select class="form-control" name="online_operation" id="online_operation">
@@ -59,10 +61,10 @@
 		JCL :
 		<input type="text" name="JCL" required><br>
 
-		<input type="button" name="search" value="sreach" onclick="tofind()">
-		<input type="button" name="update" value="batch update" onclick="toupdate()" />
+		<input type="button" name="search" value="查詢" onclick="tofind()"/>
+		<!-- <input type="button" name="update" value="批次更新" onclick="toupdate()" /> -->
 
-		<input hidden name="page" value="0">
+		<input type="hidden" name="page" value="0">
 	</form>
 
 
@@ -72,9 +74,7 @@
 		</h5>
 	</div>
 
-	<input type="button" id="btn1" value="儲存">
 
-	<input type="button" id="btn2" value="匯出">
 
 	<table border="2" id="table1" style="width: 100%">
 		<caption>
@@ -89,8 +89,11 @@
 				<span th:if="${allJclList.totalElements} != 0" th:text="目前在+${page+1}+頁"></span>
 				<br>
 				頁數: <span th:each="pages : ${pageList}">
-					<a th:href="@{show(test_type=${test_type1},program_type=${program_type1},system_operation=${system_operation1},online_operation=${online_operation1},AD=${adName},JCL=${jcl},page=${pages})}" th:text="${pages+1}"
-						th:id="page+${pages+1}"></a>
+					<a id="a1" th:onclick="|save()| "
+						th:href="@{show(test_type=${test_type1},program_type=${program_type1},system_operation=${system_operation1},online_operation=${online_operation1},AD=${adName},JCL=${jcl},page=${pages})}"
+						th:text="${pages+1}" th:id="page+${pages+1} "></a>
+
+
 				</span>
 			</strong>
 		</caption>
@@ -131,8 +134,7 @@
 					<!-- <input type="hidden" id="testname" name="testname" /> -->
 					<input th:type="hidden" id="tid" name="TID" th:value=${allJclList.tid} />
 					<!-- <input th:type="hidden" name="alldata" id="alldata" /> -->
-					<input th:type="hidden"
-						th:value="${#dates.format(new java.util.Date().getTime(),'yyyy-MM-dd HH:mm:ss')}" id="RDATETIME"
+					<input th:type="hidden" th:value="${#dates.format(new java.util.Date().getTime(),'yyyy-MM-dd HH:mm:ss')}" id="RDATETIME"
 						name="RDATETIME" />
 					<select class="form-control" name="TESTER_ID" id="TESTER_ID">
 						<option value=" ">選擇</option>
@@ -146,18 +148,70 @@
 						<option value=" ">選擇</option>
 						<option th:each="result:${result}" th:value="${result.CODE_DESC}" th:text="${result.CODE_DESC}"
 							th:selected="${result.CODE_ID} eq ${allJclList.STATUS}"></option>
+						
 					</select>
 				</td>
+				
+				<td th:text="${allJclList.STATUS} == 'N' ? ' ' : (${allJclList.STATUS} == 'T'? ' ': ${allJclList.RDATETIME})"></td>
 
-				<td th:text="${allJclList.RDATETIME} "></td>
-
-				<!-- <td th:text=></td> -->
+				
 				<td><a th:href="@{'/DefectDetail?jid='+${allJclList.jid}}" target="_blank"
 						th:text="${allJclList.STATUS}=='F' ? ${allJclList.issue_key} : ' '"></a>
 				</td>
 
-			</tr>
+			</tr></br>
 		</form>
+		
+	</table>
+	<div>
+		<input type="button" id="btn1" value="儲存">
+
+	<input type="button" id="btn2" value="匯出">
+	</div>
+	<a>批次更新</a></br>
+	<table border="2">
+
+			<form name="form3" action="/batch">
+	
+				<tr>
+					<td colspan="4" th:text="${adName}"></td>
+	
+	
+				</tr>
+				<tr>
+					<td colspan="2">測試人員</td>
+					<td colspan="2">測試結果</td>
+				</tr>
+				<tr>
+	
+					<input th:type="hidden" id="batchad" name="batchad" th:value=${batch.ad} />
+					<input th:type="hidden" id="batchtid" name="batchtid" th:value=${batch.tid} />
+					<input th:type="hidden"
+						th:value="${#dates.format(new java.util.Date().getTime(),'yyyy-MM-dd HH:mm:ss')}" id="batchrdatetime"
+						name="batchrdatetime" />
+					<td colspan="2">
+						<select class="form-control" name="batchtester_id" id="batchtester_id">
+							<option value=" ">選擇</option>
+							<option th:each="tester:${tester}" th:value="${tester.CODE_ID}" th:text="${tester.CODE_ID}">
+							</option>
+						</select>
+					</td>
+					<td colspan="2">
+						<select class="form-control" name="batchstatus">
+	
+							<option th:each="result:${result}" th:value="${result.CODE_DESC}"
+								th:text="${result.CODE_DESC}">
+							</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+	
+					<td colspan="4">
+						<input type="button" id="btn3" value="儲存變更">
+					</td>
+				</tr>
+			</form>
 	</table>
 	<script th:inline="javascript">
 		window.onload = function clickPage() {
@@ -168,8 +222,6 @@
 			let selectPageId = document.getElementById(pageId);
 			// selectPageId.style.display = "none"
 
-
-
 		}
 		// function myfun() {
 		// 	var form1 = document.form1;
@@ -177,6 +229,60 @@
 		// 	form1.submit();
 
 		// }
+		function save() {
+			// $("#a1").on("click", function () {
+			let TID = [];
+			let TESTER_ID = [];
+			let STATUS = [];
+			let RDATETIME = [];
+			let bb = [];
+			var aa = [];
+
+			$("[name='TID']").each(function (k, v) {
+				TID[k] = v.value;
+			})
+			$("[name='RDATETIME']").each(function (k, v) {
+				RDATETIME[k] = v.value;
+			})
+
+			$("[name='TESTER_ID']").each(function (k, v) {
+				TESTER_ID[k] = v.value;
+			})
+
+			$("[name='STATUS']").each(function (k, v) {
+				let a = {};
+				STATUS[k] = v.value;
+				a.TESTER_ID = TESTER_ID[k];
+				a.STATUS = STATUS[k];
+				a.TID = TID[k];
+				a.RDATETIME = RDATETIME[k];
+				a.bb = 1;
+				aa[k] = a
+			})
+
+			// $('#alldata').val(JSON.stringify(aa))
+			//console.log(aa)
+
+			$.ajax({
+				type: "get", //傳送方式
+				url: "/update", //傳送目的地
+				// contentType: "application/json;charse=UTF-8",
+				dataType: "json", //資料格式
+				data: { //傳送資料
+					'ss': JSON.stringify(aa),
+				},
+				success: function (data) {
+
+					// console.log(data);
+					// location.reload(true);
+				},
+				error: function (data) {
+					// alert("錯誤");
+					// console.log(data);
+				}
+			});
+		};
+
 		$("#btn1").on("click", function () {
 
 			let TID = [];
@@ -208,7 +314,7 @@
 			})
 
 			// $('#alldata').val(JSON.stringify(aa))
-			console.log(aa)
+			// console.log(aa)
 
 			$.ajax({
 				type: "get", //傳送方式
@@ -239,8 +345,8 @@
 		});
 
 		function tofind() {
-			if (program_type.value=="BATCH" && AD.value == "") {
-				alert("請輸入")
+			if (program_type.value == "BATCH" && AD.value == "") {
+				alert("請輸入AD")
 			} else {
 				var form1 = document.form1;
 				form1.action = "show";
@@ -248,15 +354,86 @@
 			}
 		};
 
-		function toupdate() {
-			if (program_type.value=="BATCH" && AD.value == "") {
-				alert("請輸入")
-			} else {
-				var form1 = document.form1;
-				form1.action = "batch";
-				form1.submit();
-			}
-		};
+		// function toupdate() {
+		// 	if (program_type.value == "BATCH" && AD.value == "") {
+		// 		alert("請輸入AD")
+		// 	} else {
+		// 		var form1 = document.form1;
+		// 		form1.action = "batch";
+		// 		form1.submit();
+		// 	}
+		// };
+
+		$("#btn3").on("click", function () {
+
+
+
+let ad = [];
+let TID = [];
+let TESTER_ID = [];
+let STATUS = [];
+let RDATETIME = [];
+var aa = [];
+
+$("[name='TID']").each(function (k, v) {
+	TID[k] = v.value;
+})
+
+$("[name='batchad']").each(function (k, v) {
+	ad[k] = v.value;
+})
+
+$("[name='RDATETIME']").each(function (k, v) {
+	RDATETIME[k] = v.value;
+})
+
+$("[name='batchtester_id']").each(function (k, v) {
+	TESTER_ID[k] = v.value;
+})
+
+$("[name='batchstatus']").each(function (k, v) {
+	let a = {};
+	STATUS[k] = v.value;
+	a.AD = ad[k];
+	a.TESTER_ID = TESTER_ID[k];
+	a.STATUS = STATUS[k];
+	a.TID = TID[k];
+	a.RDATETIME = RDATETIME[k];
+	aa[k] = a
+})
+
+
+
+// $('#alldata').val(JSON.stringify(aa))
+// console.log(aa)
+
+
+$.ajax({
+	type: "GET", //傳送方式
+	url: "/batchupdate", //傳送目的地
+	// contentType: "application/json;charse=UTF-8",
+	dataType: "json", //資料格式
+	data: { //傳送資料
+
+		'ss': JSON.stringify(aa),
+
+
+	},
+	success: function (data) {
+		alert("已更新");
+		// console.log(data);
+		location.reload(true);
+	},
+	error: function (data) {
+		alert("錯誤");
+		// console.log(data);
+	}
+})
+
+
+
+
+});
 
 	</script>
 </body>

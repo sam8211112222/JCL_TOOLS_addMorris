@@ -29,7 +29,7 @@ public class AjaxUpdate {
 		// 轉jsonarray
 //		JSONObject jsonObject=JSONObject.parseObject(SS);
 		JSONArray jsonArray = JSONArray.parseArray(SS);
-		
+
 		for (int i = 0; i < jsonArray.size(); i++) {
 //			Integer seq = thisService.getseq();
 			JSONObject key = (JSONObject) jsonArray.get(i);
@@ -45,25 +45,30 @@ public class AjaxUpdate {
 					status = "P";
 				} else if ("測試失敗".equals(key.get("STATUS").toString())) {
 					status = "F";
-				} 
+				}
 				String tid = key.get("TID").toString();
 				String tester_id = key.get("TESTER_ID").toString();
-				String rdatetime = key.get("RDATETIME").toString();
+				String rdatetime = String.valueOf(key.get("RDATETIME"));
 				String rid = "";
+				String iString = String.valueOf(key.get("bb"));
 
+//				System.out.println(iString);
 //				System.out.println(tid+"======"+tester_id+"======"+rdatetime+"======"+rid);
-				thisService.saveresult(status, tid, tester_id, rdatetime, rid);
+				if ("1".equals(iString)) {
+					thisService.saveresulttemp(status, tid, tester_id,rdatetime);
+				} else {
+					thisService.saveresult(status, tid, tester_id, rdatetime, rid);
+				}
 				thisService.updatetestcase(tid, status, tester_id);
 			} else {
 				String jsonStr = "{\"error\":\"error\"}";
-//System.out.println(jsonStr);
+
 			}
 		}
 
-//		PrintWriter out = response.getWriter();
+
 		// ajax回寫json格式
 		String jsonStr = "{\"success\":\"OK\"}";
-//		out.write(jsonStr);
 		return jsonStr;
 
 	}

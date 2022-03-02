@@ -410,4 +410,14 @@ public class ThisService {
 			}
 		}
 	}
+
+	public void saveresulttemp(String status, String tid, String tester_id, String rdatetime ) {
+		saveRepository.updatetemp(status,tid,tester_id,rdatetime);
+		return ;
+	}
+
+	public List<Map<String, String>> findbatchforad(String ad) {
+		
+		return findRepository.findbytoad(ad);
+	}
 }

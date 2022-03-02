@@ -179,6 +179,9 @@ public interface FindRepository extends PagingAndSortingRepository<TestCase,Stri
 
 	
 	
+	
+	
+	
 	@Query(value="select testcase.ad,testcase.sprint,testcase.jcl,testcase.jcldesc,testcase.tid,test_results.status,test_results.rdatetime\r\n"
 			+ ",test_results.tester_id ,ad_jcl.jid,defect_list.issue_key\r\n"
 			+ "					from testcase \r\n"
@@ -186,7 +189,7 @@ public interface FindRepository extends PagingAndSortingRepository<TestCase,Stri
 			+ "			    left join ad_jcl on  testcase.ad=ad_jcl.ad and testcase.jcl=ad_jcl.jcl\r\n"
 			+ "			    left join defect_list on ad_jcl.jid=defect_list.jid\r\n"
 			+ "			     where testcase.test_type=?3 and testcase.program_type=?4 and testcase.system_operation=?5 \r\n"
-			+ "                 and testcase.ad=?1 and testcase.jcl=?2 \r\n"
+			+ "                 and (testcase.ad=?1 or testcase.ad like '%?1%') and testcase.jcl=?2 \r\n"
 			+ "                 ORDER by testcase.tid   ",nativeQuery=true)
 	List<Map<String, String>> findbatch(String ad, String jcl, String test_type, String program_type,
 			String system_operation);
@@ -300,6 +303,9 @@ public interface FindRepository extends PagingAndSortingRepository<TestCase,Stri
 			+ "                 ORDER by testcase.tid  ",nativeQuery=true)
 	List<Map<String, String>> findonlinenoJCL(String test_type, String program_type, String online_operation);
 
+	
+	@Query(value="select ad,JCL,JCLDESC,tid from TESTCASE C where C.AD=?1 ",nativeQuery=true)
+	List<Map<String, String>> findbytoad(String ad);
 
 	
 }

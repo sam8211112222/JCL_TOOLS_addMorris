@@ -12,7 +12,7 @@
 
 		function tofind() {
 			if (program_type.value=="BATCH" && AD.value == "") {
-				alert("請輸入")
+				alert("請輸入AD")
 			} else {
 				var form1 = document.form1;
 				form1.action = "show";
@@ -22,7 +22,7 @@
 
 		function toupdate() {
 			if (program_type.value=="BATCH" && AD.value == "") {
-				alert("請輸入")
+				alert("請輸入AD")
 			} else {
 				var form1 = document.form1;
 				form1.action = "batch";
@@ -89,8 +89,8 @@
 		JCL :
 		<input type="text" name="JCL" required><br>
 
-		<input type="button" name="search" value="sreach" onclick="tofind()">
-		<input type="button" name="update" value="batch update" onclick="toupdate()" />
+		<input type="button" name="search" value="查詢" onclick="tofind()">
+		<input type="button" name="update" value="批次更新" onclick="toupdate()" />
 
 		<input hidden name="page" value="0">
 	</form>

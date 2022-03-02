@@ -2,12 +2,14 @@ package com.csi.jcl.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,12 +54,16 @@ public class Update {
 		String ad = request.getParameter("AD");
 //		String sprint = request.getParameter("sprint");
 		String jcl = request.getParameter("JCL");
-
-//		System.out.println(test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+//		String tid = request.getParameter("TID");
+		
+		
+		
+		List<Map<String,String>> find=thisService.findbatchforad(ad);
 		List<Map<String, String>> findtest_type = thisService.findtest_type();
 		List<Map<String, String>> findsystem_operation = thisService.findsystem_operation();
+//		System.out.println(page+"===="+test_type+"===="+program_type+"===="+system_operation+"===="+online_operation+"===="+ad+"===="+jcl);
+	
 		
-
 		
 		if (ad != "" || !ad.equals(null)) {
 
@@ -121,6 +127,8 @@ public class Update {
 			model.addAttribute("program_type1", program_type);
 			model.addAttribute("system_operation1", system_operation);
 			model.addAttribute("online_operation1", online_operation);
+			for (Map<String, String> all : find) 
+			model.addAttribute("batch", all);
 //		model.addAttribute("havetime", findleftinner);
 
 		}
