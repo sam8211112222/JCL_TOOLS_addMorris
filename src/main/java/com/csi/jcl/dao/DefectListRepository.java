@@ -23,7 +23,7 @@ public interface DefectListRepository extends PagingAndSortingRepository<DefectL
      * @date 2021/10/25
      */
 
-    @Query(nativeQuery = true, value = "SELECT DISTINCT DL.TEST_TYPE,AJ.AD,AJ.JCL,DL.ISSUE_KEY,DL.ISSUE_TYPE,DL.ISSUE_STATUS,CL.CODE_ID,CL.CODE_DESC,CL.CODE_TYPE_ID " +
+    @Query(nativeQuery = true, value = "SELECT DISTINCT DL.TEST_TYPE,AJ.AD,AJ.JCL,DL.ISSUE_KEY,DL.ISSUE_TYPE,DL.ISSUE_STATUS,CL.CODE_ID,CL.CODE_DESC,CL.CODE_TYPE_ID,DL.ISSUE_PRIORITY " +
             "from DEFECT_LIST DL,AD_JCL AJ,CODE_LIST CL,TESTCASE TC " +
             "WHERE DL.JID=AJ.jid " +
             "and DL.ISSUE_STATUS=CL.CODE_ID " +
@@ -52,7 +52,7 @@ public interface DefectListRepository extends PagingAndSortingRepository<DefectL
 
 
 
-    @Query(nativeQuery = true, value = "SELECT DISTINCT DL.TEST_TYPE,AJ.AD,AJ.JCL,DL.ISSUE_KEY,DL.ISSUE_TYPE,DL.ISSUE_STATUS,CL.CODE_ID,CL.CODE_DESC,CL.CODE_TYPE_ID " +
+    @Query(nativeQuery = true, value = "SELECT DISTINCT DL.TEST_TYPE,AJ.AD,AJ.JCL,DL.ISSUE_KEY,DL.ISSUE_TYPE,DL.ISSUE_STATUS,CL.CODE_ID,CL.CODE_DESC,CL.CODE_TYPE_ID,DL.ISSUE_PRIORITY " +
             "from DEFECT_LIST DL,AD_JCL AJ,CODE_LIST CL,TESTCASE TC " +
             "WHERE DL.JID=AJ.jid " +
             "and DL.ISSUE_STATUS=CL.CODE_ID " +

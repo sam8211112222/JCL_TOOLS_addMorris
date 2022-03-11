@@ -79,6 +79,18 @@
         <option value="Socket">Socket</option>
         <option value="Web Service">Web Service</option>
     </select>
+
+        </select>
+        <br>
+        Priority:<select name="priority" id="priority">
+        <option value="ALL">ALL</option>
+        <option value="Critical">Critical</option>
+        <option value="Highest">Highest</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+        <option value="Lowest">Lowest</option>
+    </select>
         <br>
         AD: <input size="16" type="search" name="ad" placeholder="以AD名稱搜尋"/><br/>
         JCL: <input size="16" type="search" name="jcl" placeholder="以JCL名稱搜尋"/><br/>
@@ -209,7 +221,7 @@
                             <span th:if="${allDefectList.totalElements} != 0" th:text="目前在+${page+1}+頁"></span>
                             <br>
                             頁數: <span th:each="pages : ${pageList}">
-                                        <a th:href="@{defectSearch(sprint=${sprint},ad=${ad},jcl=${jcl},issueStatus=${issueStatus},page=${pages})}"
+                                        <a th:href="@{defectSearch(ad=${ad},jcl=${jcl},issueStatus=${issueStatus},page=${pages},testType=${testType},programType=${programType},systemOperation=${systemOperation},systemOperationOnline=${systemOperationOnline},priority=${priority})}"
                                            th:text="${pages+1}" th:id="page+${pages+1}"></a>
                                     </span>
                         </strong>
@@ -223,6 +235,7 @@
                         <th scope="col" style="background-color: rgb(204, 255, 153);">DEFECT編號</th>
                         <th scope="col" style="background-color: rgb(204, 255, 153);">DEFECT類別</th>
                         <th scope="col" style="background-color: rgb(204, 255, 153);">DEFECT狀態</th>
+                        <th scope="col" style="background-color: rgb(204, 255, 153);">Priority</th>
 
                     </tr>
                     </thead>
@@ -238,6 +251,7 @@
                         <td th:text="${allDefectList.issueType}"></td>
                         <td th:if="${allDefectList.codeTypeId}=='JIRA_STATUS'"
                             th:text="${allDefectList.codeDesc}">
+                        <td th:text="${allDefectList.issuePriority}"></td>
                         </td>
 
                     </tr>
