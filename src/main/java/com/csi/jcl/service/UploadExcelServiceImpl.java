@@ -96,6 +96,8 @@ public class UploadExcelServiceImpl implements UploadExcelService{
                 Cell cellJCL = row1.getCell(6);
 
                 Cell cellIssueType = row1.getCell(7);
+
+                Cell cellIssuePoirity = row1.getCell(9);
                 AD = cellAD.getStringCellValue();
                 JCL = cellJCL.getStringCellValue();
 
@@ -123,6 +125,8 @@ public class UploadExcelServiceImpl implements UploadExcelService{
                 defectListEntity.setIssueType(cellIssueType.getStringCellValue());
 
                 defectListEntity.setIssueStatus(codeListEntity.getCodeId());
+
+                defectListEntity.setIssuePriority(cellIssuePoirity.getStringCellValue());
 
                 Date current = new Date();
                 defectListEntity.setIssueCreateDatetime(current);

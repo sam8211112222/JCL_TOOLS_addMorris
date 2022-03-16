@@ -47,9 +47,27 @@ public class DefectListEntity {
 //    @DateTimeFormat(pattern = "yyyy-MM-dd aHH:mm:ss")
     private Date issueCreateDatetime;
 
+    @Column(name="issue_priority")
+    private String issuePriority;
 
 
+    public DefectListEntity(String testType, String issueKey, String jid, String issueType, String issueStatus, Date issueCreateDatetime, String issuePriority) {
+        this.testType = testType;
+        this.issueKey = issueKey;
+        this.jid = jid;
+        this.issueType = issueType;
+        this.issueStatus = issueStatus;
+        this.issueCreateDatetime = issueCreateDatetime;
+        this.issuePriority = issuePriority;
+    }
 
+    public String getIssuePriority() {
+        return issuePriority;
+    }
+
+    public void setIssuePriority(String issuePriority) {
+        this.issuePriority = issuePriority;
+    }
 
     public String getIssueKey() {
         return issueKey;

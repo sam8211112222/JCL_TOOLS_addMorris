@@ -4,7 +4,6 @@ import com.csi.jcl.entity.CodeListEntity;
 import com.csi.jcl.model.DefectListAndAdJclModel;
 import com.csi.jcl.service.CodeListService;
 import com.csi.jcl.service.ListAllDefectService;
-import com.csi.jcl.service.UserInfoServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -63,7 +61,8 @@ public class SearchDefectListController {
                                     @RequestParam("testType") String testType,
                                     @RequestParam("programType") String programType,
                                     @RequestParam("systemOperation") String systemOperation,
-                                    @RequestParam("systemOperationOnline") String systemOperationOnline) {
+                                    @RequestParam("systemOperationOnline") String systemOperationOnline,
+                                    @RequestParam("priority")String priority) {
         //下拉式選單數值
         List<CodeListEntity>  selectTestType = codeListService.selectTestType();
         List<CodeListEntity> selectSystemOperation = codeListService.findSystemOperation();
@@ -87,6 +86,28 @@ public class SearchDefectListController {
         // 從jclService的listAllJclByCondition取得資料
         List<DefectListAndAdJclModel> defectListAndAdJclModelList = listAllDefectService.listAllDefect( ad, jcl, issueStatusList,testType,programType,systemOperation);
 
+        System.out.println("priority: "+priority);
+        //增加Priority條件
+
+        if(!priority.equals("ALL")) {
+            System.out.println("priority不是選ALL");
+            System.out.println("幾筆資料: "+defectListAndAdJclModelList.size());
+            for (int i = 0,len=defectListAndAdJclModelList.size(); i < len; i++) {
+                if(defectListAndAdJclModelList.get(i).getIssuePriority()!=null) {
+                    if (!defectListAndAdJclModelList.get(i).getIssuePriority().toUpperCase().equals(priority.toUpperCase())) {
+                        defectListAndAdJclModelList.remove(i);
+                        len--;
+                        i--;
+                        System.out.println("123");
+                    }
+                }else{
+                    System.out.println("delete"+i);
+                    defectListAndAdJclModelList.remove(i);
+                    len--;
+                    i--;
+                }
+            }
+        }
         // 計算資料的起始與結束位置
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), defectListAndAdJclModelList.size());
@@ -109,6 +130,7 @@ public class SearchDefectListController {
         model.addAttribute("issueStatus", issueStatus);
         model.addAttribute("pageList", pageList);
         model.addAttribute("programType",programType);
+        model.addAttribute("priority",priority);
         // 導回defect_list頁面
         return "defectSearch/defect_list";
     }

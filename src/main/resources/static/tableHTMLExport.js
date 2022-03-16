@@ -23,6 +23,8 @@ THE SOFTWARE.*/
 (function($){
 
 
+        var time = new Date();
+        time.get
 
     $.fn.extend({
         tableHTMLExport: function(options) {

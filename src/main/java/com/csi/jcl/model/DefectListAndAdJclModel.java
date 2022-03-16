@@ -18,10 +18,13 @@ import java.util.List;
 
 
 public class DefectListAndAdJclModel extends ActionSupport {
+    private String issuePriority;
+
     @Override
     public String toString() {
         return "DefectListAndAdJclModel{" +
-                "testType='" + testType + '\'' +
+                "priority='" + issuePriority + '\'' +
+                ", testType='" + testType + '\'' +
                 ", ad='" + ad + '\'' +
                 ", jcl='" + jcl + '\'' +
                 ", issueType='" + issueType + '\'' +
@@ -32,6 +35,28 @@ public class DefectListAndAdJclModel extends ActionSupport {
                 ", codeDesc='" + codeDesc + '\'' +
                 ", codeTypeId='" + codeTypeId + '\'' +
                 '}';
+    }
+
+    public String getIssuePriority() {
+        return issuePriority;
+    }
+
+    public void setIssuePriority(String issuePriority) {
+        this.issuePriority = issuePriority;
+    }
+
+    public DefectListAndAdJclModel(String issuePriority, String testType, String ad, String jcl, String issueType, List<String> issueStatusList, String issueStatus, String issueKey, String codeId, String codeDesc, String codeTypeId) {
+        this.issuePriority = issuePriority;
+        this.testType = testType;
+        this.ad = ad;
+        this.jcl = jcl;
+        this.issueType = issueType;
+        this.issueStatusList = issueStatusList;
+        this.issueStatus = issueStatus;
+        this.issueKey = issueKey;
+        this.codeId = codeId;
+        this.codeDesc = codeDesc;
+        this.codeTypeId = codeTypeId;
     }
 
     private String testType;
