@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="code_list")
+@Table(name="code_list", schema = "REHOST")
 public class CodeListEntity {
 
         @Id

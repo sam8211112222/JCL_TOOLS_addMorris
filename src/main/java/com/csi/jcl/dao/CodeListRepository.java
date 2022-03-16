@@ -20,7 +20,7 @@ public interface CodeListRepository extends JpaRepository<CodeListEntity,String>
      */
 
 
-    @Query(nativeQuery = true,value="select * from code_list where code_type_id = 'JIRA_STATUS' and code_desc = ?1")
+    @Query(nativeQuery = true,value="select * from rehost.code_list where code_type_id = 'JIRA_STATUS' and code_desc = ?1")
     CodeListEntity findByCodeDesc(String codeDesc);
 
     /**
@@ -30,7 +30,7 @@ public interface CodeListRepository extends JpaRepository<CodeListEntity,String>
      * @author si1206
      * @date 2022/01/19
      */
-    @Query(nativeQuery = true, value ="select * from code_list where code_type_id ='SYSTEM_TYPE'")
+    @Query(nativeQuery = true, value ="select * from rehost.code_list where code_type_id ='SYSTEM_TYPE'")
     public List<CodeListEntity> findByCodeTypeIdEqualsSystemType();
 
     /**
@@ -40,11 +40,11 @@ public interface CodeListRepository extends JpaRepository<CodeListEntity,String>
      * @author si1206
      * @date 2022/10/19
      */
-    @Query(nativeQuery = true, value ="select * from code_list where code_type_id ='SYSTEM_OPERATION'")
+    @Query(nativeQuery = true, value ="select * from rehost.code_list where code_type_id ='SYSTEM_OPERATION'")
     public List<CodeListEntity> findByCodeTypeIdSystemOperation();
 
 
-    @Query(nativeQuery = true, value ="select * from code_list where code_type_id='TEST_TYPE'")
+    @Query(nativeQuery = true, value ="select * from rehost.code_list where code_type_id='TEST_TYPE'")
     public List<CodeListEntity>  findSeletTestType();
 
 }

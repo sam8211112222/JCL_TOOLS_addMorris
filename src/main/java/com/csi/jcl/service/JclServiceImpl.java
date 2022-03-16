@@ -187,14 +187,14 @@ public class JclServiceImpl implements JclService {
 
     /**
      * 回傳成有索引值的List內容
+     *
      * @param adJclModelList
      * @return adJclModelList
-     *
      */
     @Override
     public List<AdJclModel> sortData(List<AdJclModel> adJclModelList) {
         for (int i = 0; i < adJclModelList.size(); i++) {
-            adJclModelList.get(i).setIndex(i+1);
+            adJclModelList.get(i).setIndex(i + 1);
         }
         return adJclModelList;
     }

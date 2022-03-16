@@ -58,10 +58,10 @@ public interface AdJclRepository extends PagingAndSortingRepository<AdJclEntity,
      * @author si1206
      */
     @Query(nativeQuery = true, value = "SELECT DISTINCT A1.SYSTEM_OPERATION,A1.AD ,A1.ADDESC,A1.CHT " +
-            ",(Select count(JCL) from AD_JCL WHERE AD=A1.AD) AS JCLCOUT " +
-            "from AD_JCL  A1 " +
-            "INNER JOIN TESTCASE T ON T.AD=A1.AD AND T.JCL= A1.JCL " +
-            "WHERE A1.AD NOT IN (Select AD FROM ad_jcl_exeorder WHERE BEFOREAD IS NOT NULL) " +
+            ",(Select count(JCL) from REHOST.AD_JCL WHERE AD=A1.AD) AS JCLCOUT " +
+            "from REHOST.AD_JCL  A1 " +
+            "INNER JOIN REHOST.TESTCASE T ON T.AD=A1.AD AND T.JCL= A1.JCL " +
+            "WHERE A1.AD NOT IN (Select aje.AD FROM REHOST.ad_jcl_exeorder aje WHERE aje.BEFOREAD IS NOT NULL) " +
             "AND (:testType is null OR T.TEST_TYPE = :testType) " +
             "AND (:systemOp is null OR A1.SYSTEM_OPERATION = :systemOp) " +
             "AND ( :adName is null OR A1.AD Like %:adName% ) " +
@@ -78,7 +78,7 @@ public interface AdJclRepository extends PagingAndSortingRepository<AdJclEntity,
      * @date 2021/10/22
      */
 
-    @Query(nativeQuery = true, value = "select * from ad_jcl where ad = ?1 and jcl = ?2")
+    @Query(nativeQuery = true, value = "select * from REHOST.ad_jcl where ad = ?1 and jcl = ?2")
     AdJclEntity findByAdAndJcl(String ad, String jcl);
 
 
